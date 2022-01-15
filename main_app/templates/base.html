@@ -8,6 +8,12 @@
     <meta name=“viewport” content=“width=device-width, initial-scale=1.0"> <link
     rel=“stylesheet” type=“text/css” href=“{% static 'css/style.css' %}“>
     <title>Union Catalogue</title>
+    <nav>
+      nav bar here:
+      <ul>
+        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+      </ul>
+    </nav>
   </head>
   <body>
     {% block content %} {% endblock %}

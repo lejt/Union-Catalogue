@@ -19,7 +19,8 @@ class Books(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=50)
 
-# User split into either Member or Staff
+
+# User split into either Member or Staff --------------------------------
 class Member(models.Model):
     user_memb = models.OneToOneField(User, on_delete=models.CASCADE)
     # books_rented = models.ManyToManyField(Books)
@@ -27,9 +28,24 @@ class Member(models.Model):
 class Staff(models.Model):
     user_staff = models.OneToOneField(User, on_delete=models.CASCADE)
     # shifts_per_week = models.IntegerField(default=5)
+# ------------------------------------------------------------------------
 
+# A club has many members
+class Clubs(models.Model):
+    ROOMS = (
+        ('a', '1st Floor Auditorium'),
+        ('b', '1st Floor Large Study Room'),
+        ('c', '2nd Floor Meeting Room'),
+    )
 
+    name = models.CharField(max_length=50)
+    meet_date = models.DateField('Meeting Date')
 
+    # staff should be able to add more rooms depending on library size
+    location = models.CharField(max_length=1, choices=ROOMS)
+    desc = models.TextField(max_length=100)
+    popul = models.ManyToManyField(Member)
+    
 
 
  

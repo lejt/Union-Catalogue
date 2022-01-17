@@ -1,0 +1,36 @@
+/* The Modal (background) */
+
+.modal {
+    position: fixed;
+    width: 300px;
+    max-height: 100%;
+    background-color: rgb(187, 68, 68);
+    overflow: auto; 
+    z-index: 1;
+  }
+  /* Modal Content */
+  .modal-content {
+    padding: 20px;
+    width: 100%;
+    overflow: auto;
+  }
+  .modal-content textarea {
+    width: 100%;
+  }
+  .modal-content button {
+    float: right;
+  }
+  /* The Close Button */
+  #closeAdd {
+    color: #aaaaaa;
+    font-size: 28px;
+    font-weight: bold;
+    display: flex;
+    justify-content: end;
+  }
+  #closeAdd:hover,
+  #closeAdd:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }

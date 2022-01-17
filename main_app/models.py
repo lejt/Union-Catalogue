@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
+# General User login
 class User(AbstractUser):
     # is_lib_member = models.BooleanField('is member', default=False)
     # is_lib_staff = models.BooleanField('is staff', default=False)
@@ -19,6 +19,7 @@ class Books(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=50)
 
+# User split into either Member or Staff
 class Member(models.Model):
     user_memb = models.OneToOneField(User, on_delete=models.CASCADE)
     # books_rented = models.ManyToManyField(Books)

@@ -18,4 +18,3 @@ class SignUpForm(UserCreationForm):
         model = User
         # fields = '__all__'
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'user_type']
-    

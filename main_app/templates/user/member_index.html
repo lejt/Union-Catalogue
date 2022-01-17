@@ -5,9 +5,8 @@
 
 {% for member in members %}
 
-    <p>{{ member_id }}</p>
-    <p>{{ member.user.first_name}}</p>
-    
+    <p>{{ member.id }} <span>{{ member.user_memb.first_name}}{{ member.user_memb.last_name}}</span> </p> 
+    <a href="{% url 'members_detail' member.id %}">{{ member }}</a>
     
 {% endfor %}
 

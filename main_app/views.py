@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
-from .models import Member
+from .models import Member, Staff, User
 from .forms import SignUpForm
 
-from django.views.generic import CreateView
+# from django.contrib.auth.models import User
+
+# from django.views.generic import CreateView
 
 # from django.contrib.auth import get_user_model
 # User = get_user_model()
@@ -18,9 +20,13 @@ def members_index(request):
     members = Member.objects.all()
     return render(request, 'user/member_index.html', {'members': members})
 
-def members_detail(request, user_id):
-    member = Member.objects.get(id=user_id)
+def members_detail(request, member_id):
+    member = Member.objects.get(id=member_id)
     return render(request, 'user/member_detail.html', {'member': member})
+
+def staffs_detail(request, staff_id):
+    staff = Staff.objects.get(id=staff_id)
+    return render(request, 'user/staff_detail.html', {'staff': staff})
 
 # class MemberInfo(CreateView):
 #     model = Member
@@ -40,20 +46,28 @@ def signup(request):
             user = form.save()
 
             # This is how we log a user in via code
-            login(request, user)
+            # login(request, user)
             if request.POST.get('user_type') == 'M':
-                member = Member.objects.create(user=user)
-                # print(user.id)
-                member.user_id = user.id
-                # member.id = user.id
-                # print('member id: ', member.user_id)
-                print(member.user_id)
+                # member = Member.objects.create_user(user=user)
+                # member.user_id = user.id
+                # print(member.user_id)
+
+                # user = form.save()
+
+                user_memb = Member(user_memb=user)
+                user_memb.save()
+                login(request, user)
+
                 # return redirect('home')
-                return redirect('members_index')
-                # return redirect('members_detail', member_id=user.id)
-            # if request.POST.get('user_type') == 'S':
-            #     member = Member.objects.create(user=user)
-            #     return redirect('member_detail')
+                # return redirect('members_index')
+                return redirect('members_detail', user_memb.id)
+
+            elif request.POST.get('user_type') == 'S':
+                user_staff = Staff(user_staff=user)
+                user_staff.save()
+                login(request, user)
+                return redirect('staffs_detail', user_staff.id)
+
             # return redirect('home')
         else:
             error_message = 'Invalid sign up - try again'

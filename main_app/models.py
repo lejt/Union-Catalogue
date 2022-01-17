@@ -18,8 +18,14 @@ class Books(models.Model):
     author = models.CharField(max_length=50)
 
 class Member(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    books_rented = models.ManyToManyField(Books)
+    user_memb = models.OneToOneField(User, on_delete=models.CASCADE)
+    # books_rented = models.ManyToManyField(Books)
+
+class Staff(models.Model):
+    user_staff = models.OneToOneField(User, on_delete=models.CASCADE)
+    # shifts_per_week = models.IntegerField(default=5)
+
+
 
 
 

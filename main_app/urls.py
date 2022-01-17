@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('members/', views.members_index, name='members_index'),
     path('members/<int:member_id>/', views.members_detail, name='members_detail'),
+    path('staffs/<int:staff_id>/', views.staffs_detail, name='staffs_detail'),
 
     # # CBV
     # # create

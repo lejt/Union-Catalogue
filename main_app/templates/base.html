@@ -13,18 +13,14 @@
       <ul>
         {% if user.user_type == 'M' %}
           <p>hi members</p>
+          <li>YOU CAN ONLY SEE THIS IF YOU ARE A LIB MEMBER</li>
         {% endif %}
         {% if user.user_type == 'S' %}
           <p>hi staff</p>
+          <li>YOU CAN ONLY SEE THIS IF YOU ARE A STAFF MEMBER</li>
         {% endif %}
+        
         {% if user.is_authenticated %}
-
-          {% if user_memb.is_authenticated %}
-            <li>YOU CAN ONLY SEE THIS IF YOU ARE A LIB MEMBER</li>
-            {% endif %}
-          {% if user_staff.is_authenticated %}
-            <li>YOU CAN ONLY SEE THIS IF YOU ARE A STAFF MEMBER</li>
-          {% endif %}
           <li><a href="{% url 'logout' %}">Log Out</a></li>
         {% else %}
           <li><a href="{% url 'login' %}">Log In</a></li>

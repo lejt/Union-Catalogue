@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from datetime import datetime  
 
 # Create your models here.
 class User(AbstractUser):
@@ -11,6 +10,9 @@ class User(AbstractUser):
         ('S', 'Staff'),
     )
     user_type = models.CharField(max_length=1, choices=TYPE_CHOICES, default='M')
+
+    def __str__(self):
+        return f"{self.get_user_type_display()}"
 
 class Books(models.Model):
     isbn = models.IntegerField()

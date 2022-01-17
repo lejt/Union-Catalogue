@@ -8,6 +8,7 @@
 <p>full name: {{ member.user_memb.first_name }} {{ member.user_memb.last_name }}</p>
 <p>username: {{ member.user_memb.username }}</p>
 <p>email: {{ member.user_memb.email }}</p>
+<p>User Type: {{ member.user_memb.get_user_type_display }}</p>
 
 
 {% endblock %}

@@ -31,9 +31,12 @@
       <nav>
         <div class="nav-wrapper">
           <ul>
+            
             <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;Union Catalogue</a></li>
           </ul>
           <ul class="right">
+            <li><a href="{% url 'book_create' %}">Add Book</a></li>
+            <li><a href="{% url 'books' %}">Books</a></li>
             {% if user.is_authenticated %}
               <li><a href="{% url 'clubs_index' %}">Clubs</a></li>
               <li><a href="{% url 'logout' %}">Log Out</a></li>

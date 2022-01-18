@@ -45,8 +45,6 @@ def prepate_data(source:list, needed_keys:list[str], quantity:int = None, *args,
       
       return result
 
-
-
 def create_search_url(search_text:str, *args, **kwargs):
       # Just return search url for given search text
       return BASE_SEARCH_API_URL + '?q=' + search_text

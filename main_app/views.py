@@ -10,10 +10,10 @@ from django.views.generic.edit import CreateView
 
 from main_app.utils import search_books
 
-# Create your views here.
 def home(request):
     return render(request, 'home.html')
 
+# ------------------------ User-related views ------------------------
 def members_index(request):
     members = Member.objects.all()
     return render(request, 'user/member_index.html', {'members': members})
@@ -57,25 +57,28 @@ def signup(request):
     form = SignUpForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+# ---------------------------------------------------------------------
 
-def clubs_index(request):
+def clubs_index(request, member_id):
     clubs = Club.objects.all()
     # instantiate addclub form to show in index page
     addclub_form = AddClubForm()
     return render(request, 'clubs/clubs_index.html', {'clubs': clubs, 'addclub_form': addclub_form})
 
-def add_club(request):
-    print('-------added')
+def add_club(request, member_id):
     form = AddClubForm(request.POST)
-    print('-------', request.POST)
-    print(form)
     if form.is_valid():
-        print('valid')
-        new_club = form.save()
+        new_club = form.save(commit=False)
+        new_club.member_id = member_id
+        new_club.save()
     else:
-        print('--------form invalid')
-
+        # error_message = 'Invalid club entry - try again'
+        print('club form submission failed')
     return redirect('clubs_index')
+
+def clubs_detail(request, club_id):
+    club = Club.objects.get(id=club_id)
+    return render(request, 'clubs/clubs_detail.html', {'club': club})
 
 # CBV
 class BookCreate(CreateView):

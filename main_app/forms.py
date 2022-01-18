@@ -22,4 +22,4 @@ class AddClubForm(ModelForm):
     class Meta:
         model = Club
         # name and desc should be required, everything else can be added later
-        fields = ['name', 'meet_date', 'desc']
+        fields = ['name', 'meet_date', 'location', 'desc']

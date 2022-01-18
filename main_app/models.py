@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models 
-import datetime
+from datetime import datetime    
 from django.urls import reverse
 
 # General User login
@@ -42,18 +42,20 @@ class Staff(models.Model):
 # Many club has many members - Club model holds key of Members
 class Club(models.Model):
     ROOMS = (
+        ('-', 'No meeting place assigned to this club'),
         ('a', '1st Floor Auditorium'),
         ('b', '1st Floor Large Study Room'),
         ('c', '2nd Floor Meeting Room'),
     )
 
     name = models.CharField(max_length=50)
-    meet_date = models.DateField()
+    meet_date = models.DateField(default='YYYY-MM-DD')
 
     # staff should be able to add more rooms depending on library size
-    # location = models.CharField(max_length=1, choices=ROOMS)
-    desc = models.TextField(max_length=100)
+    location = models.CharField(max_length=1, choices=ROOMS, default='-')
+    desc = models.TextField(max_length=100, blank=False)
     members = models.ManyToManyField(Member)
+    create_date = models.DateTimeField(default=datetime.now, blank=True)
 
 
     

@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
-{% load static %}
+
 {% block content %}
+
+<!-- Bootstrap CDN needed for modal testing below -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
 <h1>CLUBS LIST</h1>
-
-<!-- Trigger Modal - Add club -->
+<!-- --------------------------------------------------------------------------------------------- -->
+<!-- Modal Testing - Jacky's -->
 <!-- <button id="addBtn" class="btn">Add Club</button><br>
 
 <div id="modal_add_club" class="modalCustom">
@@ -20,8 +22,8 @@
         </form>
     </div>
 </div> -->
-
-<!-- Modal Materialize -->
+<!-- --------------------------------------------------------------------------------------------- -->
+<!-- Modal Testing - Materialize -->
 <!-- <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a> -->
 
 <!-- Modal Structure -->
@@ -31,8 +33,8 @@
     <p>A bunch of text</p>
   </div>
 </div> -->
-
-<!-- Bootstrap Modal -->
+<!-- --------------------------------------------------------------------------------------------- -->
+<!-- Modal Testing - Bootstrap -->
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
     Add Club
@@ -59,9 +61,7 @@
       </div>
     </div>
   </div>
-
-
-
+<!-- --------------------------------------------------------------------------------------------- -->
 {% if clubs.count > 0 %}
 <table>
     <tr>
@@ -84,18 +84,17 @@
         </tr>
     {% endfor %}
 </table>
+
 {% else %}
     <p>-- No clubs --</p>
 {% endif %}
 
+<!-- js needed to show calendar on club creation -->
 <script>
     const input = document.getElementById('id_meet_date');
     const datepicker = new TheDatepicker.Datepicker(input);
     datepicker.options.setInputFormat("Y-m-d");
     datepicker.render();
 </script>
-
-
-
 
 {% endblock %}

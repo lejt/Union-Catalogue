@@ -5,8 +5,6 @@ from django.urls import reverse
 
 # General User login
 class User(AbstractUser):
-    # is_lib_member = models.BooleanField('is member', default=False)
-    # is_lib_staff = models.BooleanField('is staff', default=False)
     TYPE_CHOICES = (
         ('M', 'Member'),
         ('S', 'Staff'),
@@ -16,15 +14,13 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.get_user_type_display()}"
 
-class Books(models.Model):
+class Book(models.Model):
     isbn = models.IntegerField()
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=50)
     
     def get_absolute_url(self):
-        return reverse('detail', kwargs={'books_id': self.id})
-    
-    
+        return reverse('books_detail', kwargs={'books_id': self.id})
     
 
 # User split into either Member or Staff --------------------------------
@@ -43,7 +39,7 @@ class Staff(models.Model):
         return self.user_staff.first_name
 # ------------------------------------------------------------------------
 
-# A club has many members
+# Many club has many members - Club model holds key of Members
 class Club(models.Model):
     ROOMS = (
         ('a', '1st Floor Auditorium'),

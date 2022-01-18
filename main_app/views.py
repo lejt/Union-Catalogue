@@ -85,11 +85,12 @@ def add_club(request):
     print(form)
     if form.is_valid():
         print('valid')
-        new_club = form.save(commit=False)
-        new_club.save()
-        # clubs = Club.objects.all(), {'clubs': clubs}
+        new_club = form.save()
+        # new_club.save()
+        # clubs = Club.objects.all()
     else:
         print('--------form invalid')
+    # return render(request, 'clubs/clubs_index.html, {'clubs': clubs})
     return redirect('clubs_index')
 
 # CBV

@@ -46,7 +46,7 @@ class Club(models.Model):
     # location = models.CharField(max_length=1, choices=ROOMS)
     desc = models.TextField(max_length=100)
     # popul = models.ManyToManyField(Member)
-    
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
 
 
  

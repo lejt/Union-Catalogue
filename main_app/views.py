@@ -5,13 +5,8 @@ from django.views.generic.edit import CreateView
 from .models import *
 from .forms import AddClubForm, SignUpForm
 
-# from django.contrib.auth.models import User
-
 from django.views.generic.edit import CreateView
 # from django.views.generic import ListView
-
-# from django.contrib.auth import get_user_model
-# User = get_user_model()
 
 
 # Create your views here.
@@ -33,30 +28,22 @@ def staffs_detail(request, staff_id):
 def signup(request):
     error_message = ''
     if request.method == 'POST':
-        # This is how to create a 'user' form object
-        # that includes the data from the browser
         form = SignUpForm(request.POST)
         if form.is_valid():
             # This will add the user to the database
-
             # To access info on the form, request.POST.get('variable name'))
             user = form.save()
 
-            # This is how we log a user in via code
-            # login(request, user)
             if request.POST.get('user_type') == 'M':
                 # member = Member.objects.create_user(user=user)
                 # member.user_id = user.id
                 # print(member.user_id)
 
                 # user = form.save()
-
                 user_memb = Member(user_memb=user)
                 user_memb.save()
+                # This is how we log a user in via code
                 login(request, user)
-
-                # return redirect('home')
-                # return redirect('members_index')
                 return redirect('members_detail', user_memb.id)
 
             elif request.POST.get('user_type') == 'S':
@@ -64,11 +51,8 @@ def signup(request):
                 user_staff.save()
                 login(request, user)
                 return redirect('staffs_detail', user_staff.id)
-
-            # return redirect('home')
         else:
             error_message = 'Invalid sign up - try again'
-    # A bad POST or a GET request, so render signup.html with an empty form
     form = SignUpForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
@@ -86,31 +70,21 @@ def add_club(request):
     print(form)
     if form.is_valid():
         print('valid')
-        new_club = form.save(commit=False)
-        new_club.save()
-        # clubs = Club.objects.all(), {'clubs': clubs}
+        new_club = form.save()
     else:
         print('--------form invalid')
+
     return redirect('clubs_index')
 
 # CBV
-# class ClubCreate(CreateView):
-#     model = Clubs
-#     fields = ['name', 'desc']
-
-#     def get(self, request):
-#         return render(request, 'clubs/clubs_index.html')
-
 class BookCreate(CreateView):
-    model = Books
+    model = Book
     fields = '__all__'
 
 def books_detail(request, books_id):
-    book = Books.objects.get(id=books_id)
+    book = Book.objects.get(id=books_id)
     return render(request, 'books/detail.html', {'book':book})
 
-
-     
 def books_index(request):
-    books = Books.objects.all()
+    books = Book.objects.all()
     return render(request, 'books/index.html', {'books': books})

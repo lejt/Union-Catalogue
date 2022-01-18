@@ -32,9 +32,15 @@ class Member(models.Model):
     user_memb = models.OneToOneField(User, on_delete=models.CASCADE)
     # books_rented = models.ManyToManyField(Books)
 
+    def __str__(self):
+        return self.user_memb.first_name
+
 class Staff(models.Model):
     user_staff = models.OneToOneField(User, on_delete=models.CASCADE)
     # shifts_per_week = models.IntegerField(default=5)
+
+    def __str__(self):
+        return self.user_staff.first_name
 # ------------------------------------------------------------------------
 
 # A club has many members

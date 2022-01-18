@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
-from django.db import models
+from django.db import models 
 import datetime
+from django.urls import reverse
 
 # General User login
 class User(AbstractUser):
@@ -19,7 +20,12 @@ class Books(models.Model):
     isbn = models.IntegerField()
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=50)
-
+    
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'books_id': self.id})
+    
+    
+    
 
 # User split into either Member or Staff --------------------------------
 class Member(models.Model):
@@ -45,8 +51,10 @@ class Club(models.Model):
     # staff should be able to add more rooms depending on library size
     # location = models.CharField(max_length=1, choices=ROOMS)
     desc = models.TextField(max_length=100)
-    # popul = models.ManyToManyField(Member)
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    members = models.ManyToManyField(Member)
+
+
+    
 
 
  

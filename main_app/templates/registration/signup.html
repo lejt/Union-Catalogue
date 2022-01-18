@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>GENERAL SIGN UP HERE</h1>
+<h2>Sign up as Member or Staff</h2>
+
+<form action="{% url 'signup' %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Sign Up</button>
+</form>
+
+<script>
+    // add JS to initialize select below + include materialize script library to show dropdown in signup
+    const selectEl = document.getElementById('id_user_type');
+    M.FormSelect.init(selectEl);
+</script>
+
+{% endblock %}

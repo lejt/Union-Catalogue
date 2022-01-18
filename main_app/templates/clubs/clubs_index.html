@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h1>CLUBS LIST</h1>
+
+<!-- Trigger Modal - Add club -->
+<button id="addDescBtn" class="btn">Add Club</button><br>
+
+<div id="modal_addDesc" class="modal">
+            
+    <div class="modal-content">
+        <span id="closeAdd">&times;</span>
+        <form action="" method="POST">
+            <label>Write a club description:</label><br>
+            <textarea name="desc"></textarea><br>
+
+            <button class="btn" type="submit">Submit</button> 
+        </form>
+    </div>
+</div>
+
+
+{% if clubs.count %}
+    {% for club in clubs %}
+        <table>
+            <tr>
+                <th>Club Name</th>
+                <th>Next Meet Date</th>
+                <th>Location</th>
+                <th>Description</th>
+                <th>No. of members</th>
+                <th>Creation Date</th>
+            </tr>
+            <tr>
+                <!-- delete opens a 'are you sure?' page <button type="submit">Close Club</button> -->
+                <td>club.name</td>
+                <td>club.meet_date</td>
+                <td>club.location</td>
+                <td>club.desc</td>
+                <td>club.popul</td>
+                <td>club.create_date</td>
+            </tr>
+        </table>
+    {% endfor %}
+{% else %}
+    <p>-- No clubs --</p>
+{% endif %}
+
+
+{% endblock %}

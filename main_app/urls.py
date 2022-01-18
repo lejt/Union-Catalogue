@@ -9,9 +9,10 @@ urlpatterns = [
     path('staffs/<int:staff_id>/', views.staffs_detail, name='staffs_detail'),
     
     path('clubs/', views.clubs_index, name='clubs_index'),
+    path('clubs/add_club/', views.add_club, name='add_club'),
 
     # CBV
-    # path('clubs/', views.ClubList.as_view(), name='clubs_index'),
+    # path('clubs/create/', views.ClubCreate.as_view(), name='clubs_create'),
 
 
     # no login path needed, already built-in

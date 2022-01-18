@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+import datetime
 
 # General User login
 class User(AbstractUser):
@@ -31,7 +32,7 @@ class Staff(models.Model):
 # ------------------------------------------------------------------------
 
 # A club has many members
-class Clubs(models.Model):
+class Club(models.Model):
     ROOMS = (
         ('a', '1st Floor Auditorium'),
         ('b', '1st Floor Large Study Room'),
@@ -39,12 +40,12 @@ class Clubs(models.Model):
     )
 
     name = models.CharField(max_length=50)
-    meet_date = models.DateField('Meeting Date')
+    meet_date = models.DateField()
 
     # staff should be able to add more rooms depending on library size
-    location = models.CharField(max_length=1, choices=ROOMS)
+    # location = models.CharField(max_length=1, choices=ROOMS)
     desc = models.TextField(max_length=100)
-    popul = models.ManyToManyField(Member)
+    # popul = models.ManyToManyField(Member)
     
 
 

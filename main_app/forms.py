@@ -1,8 +1,7 @@
 
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
-
+from .models import User, Club
 from django import forms
 
 class LoginForm(UserCreationForm):
@@ -18,3 +17,9 @@ class SignUpForm(UserCreationForm):
         model = User
         # fields = '__all__'
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'user_type']
+
+class AddClubForm(ModelForm):
+    class Meta:
+        model = Club
+        # name and desc should be required, everything else can be added later
+        fields = ['name', 'meet_date', 'desc']

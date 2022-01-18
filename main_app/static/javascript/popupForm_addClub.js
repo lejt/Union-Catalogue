@@ -1,25 +1,19 @@
 // Get the modal
-const modalAddDesc = document.getElementById("modal_addDesc");
+const modal_add_club = document.getElementById("modal_add_club");
 
 // Get the button that opens the modal
-const addDescBtn = document.getElementById("addDescBtn");
+const addBtn = document.getElementById("addBtn");
 
 // Get the <span> element that closes the modal
 const closeAdd = document.getElementById("closeAdd");
 
 // When the user clicks the button, open the modal
-if (addDescBtn) {
-    addDescBtn.onclick = function() {
-        modalAddDesc.style.display = "block";
+if (addBtn) {
+    addBtn.onclick = function() {
+        modal_add_club.style.display = "block";
     }
 }
 
 closeAdd.onclick = function() {
-    modalAddDesc.style.display = "none";
+    modal_add_club.style.display = "none";
 }
-
-window.onclick = function(event) {
-    if (event.target == modalAddDesc) {
-        modalAddDesc.style.display = "none";
-    } 
-};

@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
-from .forms import SignUpForm
+from .forms import AddClubForm, SignUpForm
 
 # from django.contrib.auth.models import User
 
+from django.views.generic.edit import CreateView
 # from django.views.generic import ListView
 
 # from django.contrib.auth import get_user_model
@@ -72,8 +73,29 @@ def signup(request):
     return render(request, 'registration/signup.html', context)
 
 def clubs_index(request):
-    clubs = Clubs.objects.all()
-    return render(request, 'clubs/clubs_index.html', {'clubs': clubs})
+    clubs = Club.objects.all()
+    # instantiate addclub form to show in index page
+    addclub_form = AddClubForm()
+    return render(request, 'clubs/clubs_index.html', {'clubs': clubs, 'addclub_form': addclub_form})
 
+def add_club(request):
+    print('-------added')
+    form = AddClubForm(request.POST)
+    print('-------', request.POST)
+    print(form)
+    if form.is_valid():
+        print('valid')
+        new_club = form.save(commit=False)
+        new_club.save()
+        # clubs = Club.objects.all(), {'clubs': clubs}
+    else:
+        print('--------form invalid')
+    return redirect('clubs_index')
 
 # CBV
+# class ClubCreate(CreateView):
+#     model = Clubs
+#     fields = ['name', 'desc']
+
+#     def get(self, request):
+#         return render(request, 'clubs/clubs_index.html')

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
+from django.views.generic.edit import CreateView
 from .models import *
 from .forms import AddClubForm, SignUpForm
 
@@ -99,3 +100,17 @@ def add_club(request):
 
 #     def get(self, request):
 #         return render(request, 'clubs/clubs_index.html')
+
+class BookCreate(CreateView):
+    model = Books
+    fields = '__all__'
+
+def books_detail(request, books_id):
+    book = Books.objects.get(id=books_id)
+    return render(request, 'books/detail.html', {'book':book})
+
+
+     
+def books_index(request):
+    books = Books.objects.all()
+    return render(request, 'books/index.html', {'books': books})

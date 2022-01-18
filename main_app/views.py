@@ -8,6 +8,7 @@ from .forms import AddClubForm, SignUpForm
 from django.views.generic.edit import CreateView
 # from django.views.generic import ListView
 
+from main_app.utils import search_books
 
 # Create your views here.
 def home(request):
@@ -86,5 +87,32 @@ def books_detail(request, books_id):
     return render(request, 'books/detail.html', {'book':book})
 
 def books_index(request):
-    books = Book.objects.all()
-    return render(request, 'books/index.html', {'books': books})
+
+    # OLD ORIGINAL CODE----------------
+    # books = Book.objects.all()
+
+    # if querySearch == request.GET.get("q"):
+    #     books = search_books(querySearch)
+    #     print(books)
+    # return render(request, 'books/index.html', {'books': books})
+    # --------------------------------
+
+    books:list = []
+    message:str = ""
+    # if user search something - get this books, using search_books function
+    if searchQuery := request.GET.get("q"):
+        books:list[dict] = search_books(searchQuery)
+    
+        # if we don`t get books we display message
+        if len(books) == 0:
+                message = "No books was found."
+    
+    return render(request, "books/index.html", {
+        "books": books,
+        "message":message
+    })
+
+
+
+
+

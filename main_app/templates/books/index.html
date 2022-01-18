@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for book in books %}
-<div><a href="{% url 'books_detail' book.id %}"><h3>{{book.title}}</h3></a>
-<p>{{book.author}}</p>
-</div>
-
-{% endfor %}
+{% if books.count > 0 %}
+    {% for book in books %}
+        <div><a href="{% url 'books_detail' book.id %}"><h3>{{book.title}}</h3></a>
+        <p>{{book.author}}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <h4 class="center">No Books</h4>
+{% endif %}
 
 {% endblock %}

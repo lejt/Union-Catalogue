@@ -5,9 +5,9 @@
 
 <p>Hi {{ staff.user_staff.first_name }}!</p>
 
-<p>full name: {{ staff.user_staff.first_name }} {{ staff.user_staff.last_name }}</p>
-<p>username: {{ staff.user_staff.username }}</p>
-<p>email: {{ staff.user_staff.email }}</p>
-<p>User Type: {{ staff.user_staff.get_user_type_display }}</p>
+<p>full name: {{ staff.user.first_name }} {{ staff.user.last_name }}</p>
+<p>username: {{ staff.user.username }}</p>
+<p>email: {{ staff.user.email }}</p>
+<p>User Type: {{ staff.user.get_user_type_display }}</p>
 
 {% endblock %}

@@ -25,7 +25,7 @@ def members_detail(request, member_id):
 
     # if member is logged in and trying to see their own profile
     if request.user.user_type == 'M':
-        # find member_id based on request.user.id
+        # find member_id based on request.user.id (dynamic)
         user = User.objects.get(id=request.user.id)
         member_id = user.member.id
 
@@ -47,7 +47,7 @@ def users_detail(request, user_id):
     user = User.objects.get(id=user_id)
     return render(request, 'user/user_detail.html', {user})
 
-
+# ---------------------------------------------------------------------
 def signup(request):
     error_message = ''
     if request.method == 'POST':
@@ -58,7 +58,6 @@ def signup(request):
             user = form.save()
 
             if request.POST.get('user_type') == 'M':
-
                 # for updating a manytomanyfield
                 # member = Member.objects.create(user=user)
 
@@ -70,7 +69,6 @@ def signup(request):
                 member = Member(user=user)
                 member.save()
 
-                # This is how we log a user in via code
                 login(request, user)
                 return redirect('members_detail', member.id)
 
@@ -84,32 +82,6 @@ def signup(request):
     form = SignUpForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
-
-# def signup(request):
-#     error_message = ''
-#     if request.method == 'POST':
-#         form = UserSignUpForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-
-#             if request.POST.get('user_type') == 'M':
-#                 member = Member(user=user)
-#                 member.save()
-#                 login(request, user)
-#                 return redirect('members_detail', user_id=user.id)
-
-#             elif request.POST.get('user_type') == 'S':
-#                 staff = Staff(user=user)
-#                 staff.save()
-#                 login(request, user)
-#                 print('user id here: ',user.id)
-#                 print('staff id here: ',staff.id)
-#                 print('staff.user id here: ',staff.user.id)
-#                 return redirect('staffs_detail', user_id=user.id)
-
-#     form = UserSignUpForm()
-#     context = {'form': form, 'error_message': error_message}
-#     return render(request, 'registration/signup.html', context)
 # ---------------------------------------------------------------------
 
 def clubs_index(request):
@@ -121,19 +93,11 @@ def clubs_index(request):
 def add_club(request):
     form = AddClubForm(request.POST)
     if form.is_valid():
-        new_club = form.save(commit=False)
-        # print('@@@@@@@@',club_president)
-        # give user id of 4 or member id of 4
-        print('--------',request.user.id)
-        # m = Member.objects.filter(user=request.user.id)
-        
-        # print('!!!!!!!!', m)
-        new_club.save()
-        # new_club is like Club.objects.last()
-        # it id is only available after the .save()
-        # print('#######', new_club.id)
+        new_club = form.save()
+        # new_club.save()
+        # new_club is like Club.objects.last(), the newest created club should be the last obj
+        # new_club id is only available after the .save()
 
-        # club_president is empty object
         new_club.members.add(Member.objects.filter(user=request.user.id)[0].id)
 
         # club = Club.objects.get(id=club_id)

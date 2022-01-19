@@ -17,27 +17,22 @@
 
 <!-- this should be only seen by staff -->
 <h3>Club's members:</h3>
-{% if club.members.count %}
 
+<table>
+    <tr>
+        <th>Member ID</th>
+        <th>Member</th>
+        <th>Join Date</th>
+    </tr>
     {% for member in club.members.all %}
-        <table>
-            <tr>
-                <th>Member ID</th>
-                <th>Member</th>
-                <th>Join Date</th>
-            </tr>
-            <tr>
-                <td>{{ member.user.id }}</td>
-                <td>{{ member.user.first_name }} {{ member.user.last_name }}</td>
-                <td></td>
-            </tr>
-        </table>
-        
-        <!-- {{ member.id }} -->
+        <tr>
+            <td>{{ member.id }}</td>
+            <td>{{ member.user.first_name }} {{ member.user.last_name }}</td>
+            <td></td>
+        </tr>
     {% endfor %}
-{% else %}
-    <h5>No members</h5>
-{% endif %}
+</table>
+
 
 
 {% endblock %}

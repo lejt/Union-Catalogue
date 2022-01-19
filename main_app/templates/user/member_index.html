@@ -3,12 +3,21 @@
 
 <h1>Members List</h1>
 
-{% for member in members %}
-
-    <p>{{ member.id }} <span>{{ member.user_memb.first_name}}{{ member.user_memb.last_name}}</span> </p> 
-    <a href="{% url 'members_detail' member.id %}">{{ member }}</a>
+    <table>
+        <tr>
+            <th>Member ID</th>
+            <th>Name (Last, First)</th>
+            <th>No. Books Rented</th>
+            <th>No. Clubs Joined</th>
+        </tr>
+        {% for member in members %}
+            <tr>
+                <td><a href="{% url 'members_detail' member.id %}">{{ member.id }}</a></td>
+                <td>{{ member.user.last_name}}, {{ member.user.first_name}}</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        {% endfor %}
+    </table>
     
-{% endfor %}
-
-
 {% endblock %}

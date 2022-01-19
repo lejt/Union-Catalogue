@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{ club.name }} Details</h1>
+<ul>
+    <!-- club president is the first member of a club -->
+    <li>Club President: {{ club.members.first }}</li>
+    <li>No. of members: {{ club.members.count }}</li>
+</ul>
+
+<h5>Meeting Details:</h5>
+<ul>
+    <li>Next Meeting Date: -----{{ club.meet_date }}-----</li>
+    <li>Meeting Location: -----{{ club.get_location_display }}-----</li>
+</ul>
+
+<!-- this should be only seen by staff -->
+<h3>Club's members:</h3>
+
+<table>
+    <tr>
+        <th>Member ID</th>
+        <th>Member</th>
+        <th>Join Date</th>
+    </tr>
+    {% for member in club.members.all %}
+        <tr>
+            <td>{{ member.id }}</td>
+            <td>{{ member.user.first_name }} {{ member.user.last_name }}</td>
+            <td></td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+
+{% endblock %}

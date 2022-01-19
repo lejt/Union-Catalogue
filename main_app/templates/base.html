@@ -28,20 +28,31 @@
   <body>
     <header class="navbar-fixed">
       <nav>
-        <div class="nav-wrapper">
+        <div class="nav-wrapper indigo lighten-2">
           <ul>
             <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;Union Catalogue</a></li>
           </ul>
           <ul class="right">
-            {% if user.is_authenticated %}
-              <li><a href="{% url 'book_create' %}">Add Book</a></li>
-              <li><a href="{% url 'books' %}">Books</a></li>
-              <li><a href="{% url 'clubs_index' %}">Clubs</a></li>
-              <li><a href="{% url 'logout' %}">Log Out</a></li>
-            {% else %}
-              <li><a href="{% url 'login' %}">Log In</a></li>
-              <li><a href="{% url 'signup' %}">Sign Up</a></li>
-            {% endif %}  
+            <!-- The SuperUser cannot interact with the features of the app -->
+            
+              {% if user.is_authenticated %}
+                <li><a href="{% url 'book_create' %}">Add Book</a></li>
+                <li><a href="{% url 'books' %}">Books</a></li>
+                <li><a href="{% url 'clubs_index' %}">Clubs</a></li>
+  
+                {% if user.user_type == 'M' %}
+                  <li><a href="{% url 'members_detail' user.id %}">Member Profile</a></li>
+                {% elif user.user_type == 'S' %}
+                  <li><a href="{% url 'members_index' %}">All Library Members</a></li>
+                  <li><a href="{% url 'staffs_detail' user.id %}">Staff Profile</a></li>
+                {% endif %}
+          
+                <li><a href="{% url 'logout' %}">Log Out</a></li>
+              {% else %}
+                <li><a href="{% url 'login' %}">Log In</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+              {% endif %}
+
           </ul>
         </div>
       </nav>
@@ -49,18 +60,17 @@
 
     <main class="container">
       {% if user.user_type == 'M' %}
-        <p>hi members</p>
+        <h5>Logged in as Member</h5>
+      {% elif user.user_type == 'S' %}
+        <h5>Logged in as Staff</h5>
       {% endif %}
-      {% if user.user_type == 'S' %}
-        <p>hi staff</p>
-      {% endif %}
-      
+
       {% block content %} 
       {% endblock %}
     </main>
 
-    <footer class="page-footer">
-      <div class="footer-copyright">
+    <footer class="page-footer indigo lighten-2">
+      <!-- <div class="footer-copyright"> -->
         <div class="container">
         © 2022 All Rights Reserved | Union Catalogue
           <div class="right">
@@ -70,7 +80,7 @@
             <a href="#" class="grey-text">Eduardo C</a>
           </div>
         </div>
-      </div>
+      <!-- </div> -->
    </footer>
 
   </body>

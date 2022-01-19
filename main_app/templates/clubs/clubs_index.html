@@ -30,7 +30,7 @@
     <div class="modal-header">
       <h5 class="modal-title">Create a Club</h5>
     </div>
-    <form action="{% url 'add_club' member.id %}" method="POST">
+    <form action="{% url 'add_club' %}" method="POST">
         <div class="modal-body">
             {% csrf_token %}
             {{ addclub_form.as_p }}

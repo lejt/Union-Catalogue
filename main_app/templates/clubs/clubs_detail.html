@@ -4,7 +4,8 @@
 
 <h1>{{ club.name }} Details</h1>
 <ul>
-    <li>Club President: {{ club.members.count }}</li>
+    <!-- club president is the first member of a club -->
+    <li>Club President: {{ club.members.first }}</li>
     <li>No. of members: {{ club.members.count }}</li>
 </ul>
 
@@ -14,7 +15,29 @@
     <li>Meeting Location: -----{{ club.get_location_display }}-----</li>
 </ul>
 
+<!-- this should be only seen by staff -->
+<h3>Club's members:</h3>
+{% if club.members.count %}
 
+    {% for member in club.members.all %}
+        <table>
+            <tr>
+                <th>Member ID</th>
+                <th>Member</th>
+                <th>Join Date</th>
+            </tr>
+            <tr>
+                <td>{{ member.user.id }}</td>
+                <td>{{ member.user.first_name }} {{ member.user.last_name }}</td>
+                <td></td>
+            </tr>
+        </table>
+        
+        <!-- {{ member.id }} -->
+    {% endfor %}
+{% else %}
+    <h5>No members</h5>
+{% endif %}
 
 
 {% endblock %}

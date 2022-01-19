@@ -1,21 +1,4 @@
-.modal {
-    background-color: red;
-}
-body {
-    background-color: blue;
-}
 
-* {
-    background-color: aquamarine;
-}
-
-html {
-    background-color: chocolate;
-}
-  
-.modal-content {
-    background-color: red;
-}
-.container {
-    background-color: chocolate;
+main {
+    min-height: 100vh;
 }

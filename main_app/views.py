@@ -20,15 +20,16 @@ def members_index(request):
     return render(request, 'user/member_index.html', {'members': members})
 
 def members_detail(request, member_id):
-    # print(request.user.id)
-    
     # original method:
     # member = Member.objects.get(id=member_id)
 
-    # find member_id based on request.user.id
-    user = User.objects.get(id=request.user.id)
-    member_id = user.member.id
+    # if member is logged in and trying to see their own profile
+    if request.user.user_type == 'M':
+        # find member_id based on request.user.id
+        user = User.objects.get(id=request.user.id)
+        member_id = user.member.id
 
+    # if staff is logged in and trying to see other members' profile
     member = Member.objects.get(id=member_id)
     return render(request, 'user/member_detail.html', {'member': member})
 

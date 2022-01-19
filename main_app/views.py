@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
 from .models import *
-from .forms import AddClubForm, SignUpForm, UserSignUpForm
+from .forms import AddClubForm, SignUpForm, UserSignUpForm, RentBookForm
 
 from django.views.generic.edit import CreateView
 # from django.views.generic import ListView
@@ -31,7 +31,10 @@ def members_detail(request, member_id):
 
     # if staff is logged in and trying to see other members' profile
     member = Member.objects.get(id=member_id)
-    return render(request, 'user/member_detail.html', {'member': member})
+
+    books = member.books.all()
+
+    return render(request, 'user/member_detail.html', {'member': member, 'books':books})
 
 def staffs_detail(request, staff_id):
     # original method:
@@ -112,13 +115,13 @@ def clubs_detail(request, club_id):
     return render(request, 'clubs/clubs_detail.html', {'club': club})
 
 # CBV
-class BookCreate(CreateView):
-    model = Book
-    fields = '__all__'
+# class BookCreate(CreateView):
+#     model = Book
+#     fields = '__all__'
 
-def books_detail(request, books_id):
-    book = Book.objects.get(id=books_id)
-    return render(request, 'books/detail.html', {'book':book})
+# def books_detail(request, books_id):
+#     book = Book.objects.get(id=books_id)
+#     return render(request, 'books/detail.html', {'book':book})
 
 def books_index(request):
 
@@ -141,12 +144,87 @@ def books_index(request):
         if len(books) == 0:
                 message = "No books was found."
     
+    # print('PRINT BOOKS', books)
+
+
+
+
     return render(request, "books/index.html", {
         "books": books,
         "message":message
     })
 
+# def rent_book(request):
+    # member = Member.objects.get(id=member_id)
+    # member.books.add(book_key)
+    # return redirect('books/index')
 
+    # if request.method == "POST":
+    #     data = dict(request.POST)
+    #     data['user'] = request.user
+    #     form = FavouriteBookForm(data)
+    #     if form.is_valid():
+    #             form.save()
+    #     else:
+    #             print(form.errors)
+        
 
+    # return redirect(reverse('books/index'))
 
+def favourite_page(request):
+      message:str = ""
+      queryset = request.user.books.all()
+      if len(queryset) == 0:
+            message = "You don`t have favourite books yet"
+      return render(request, "books/favourite.html", {"books":queryset, "message":message})
 
+# def add_to_favourite_books(request):
+#       if request.method == "POST":
+#             data = dict(request.POST)
+#             data['user'] = request.user
+#             form = FavouriteBookForm(data)
+
+#             if form.is_valid():
+#                     form.save()
+#             else:
+#                     print(form.errors)
+            
+#             return redirect(reverse("books/index"))
+#       return redirect(reverse("books/index"))
+    
+# Remember, ONETOMANY, One Member has Many RentBook
+def add_to_rent_books(request):
+    if request.method == "POST":
+        # model for RentBookForm is RentBook
+        form = RentBookForm(request.POST)
+        print('form HERE: ', form)
+        if form.is_valid():
+            # latest rent book added to RentBook Model
+            new_rent_book = form.save(commit=False)
+    
+            if request.user.user_type == 'M':
+                # find member_id based on request.user.id (dynamic)
+                user = User.objects.get(id=request.user.id)
+                member_id = user.member.id
+            # member = Member.objects.get(id=member_id)
+
+            new_rent_book.member_id = member_id
+            new_rent_book.save()
+
+            print('I rent out the book with my id: ',new_rent_book.member_id)
+            print('This is my new book: ', new_rent_book)
+            print('Member.books.all: ', Member.objects.get(id=member_id).books.all())
+
+        else:
+                print(form.errors)
+        
+    return redirect('members_detail', member_id=member_id)
+      
+
+# def delete_favourite(request, id):
+#       try:
+#             FavouriteBook.objects.get(user = request.user, key = id).delete()
+#       except FavouriteBook.DoesNotExist:
+#             pass
+      
+#       return redirect("books:favourite")

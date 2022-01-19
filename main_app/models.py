@@ -15,18 +15,11 @@ class User(AbstractUser):
     address = models.CharField(max_length=200, null=True)
     user_type = models.CharField(max_length=1, choices=TYPE_CHOICES, default='M')
 
+
     def __str__(self):
         # return f"{self.get_user_type_display()}"
         return f"{self.first_name} {self.last_name}"
 
-class Book(models.Model):
-    isbn = models.IntegerField()
-    title = models.CharField(max_length=100)
-    author = models.CharField(max_length=50)
-    
-    def get_absolute_url(self):
-        return reverse('books_detail', kwargs={'books_id': self.id})
-    
 
 # User split into either Member or Staff --------------------------------
 class Member(models.Model):
@@ -47,6 +40,30 @@ class Staff(models.Model):
         return f"{self.user.first_name} {self.user.last_name}"
 
 # ------------------------------------------------------------------------
+class RentBook(models.Model):
+    # isbn = models.IntegerField()
+    # title = models.CharField(max_length=100)
+    # author = models.CharField(max_length=50)
+    # member = models.ForeignKey(Member, on_delete=models.CASCADE)
+
+    # def get_absolute_url(self):
+    #     return reverse('books_detail', kwargs={'books_id': self.id})
+    title = models.CharField(verbose_name = "name", max_length = 200, unique=True)
+    member = models.ForeignKey(Member, on_delete = models.CASCADE, related_name = "books")
+    image = models.CharField(max_length=200, null = True)
+    author_name = models.CharField(max_length=200, null = True, blank = True)
+    key = models.CharField(max_length=100, null = True, unique=True)
+
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        return reverse("books/detail", kwargs = {"id":self.key})
+
+    def get_delete_url(self):
+        return reverse("books/favourite-delete", kwargs={"id":self.key})  
+
+
 
 # Many club has many members - Club model holds key of Members
 class Club(models.Model):
@@ -69,7 +86,25 @@ class Club(models.Model):
     def show_club_president(self):
         pass
 
-    
+class FavouriteBook(models.Model):
+      title = models.CharField(verbose_name = "name", max_length = 200, unique=True)
+      
+      user = models.ForeignKey(User, on_delete = models.CASCADE, related_name = "books")
+      
+      image = models.CharField(max_length=200, null = True)
+      
+      author_name = models.CharField(max_length=200, null = True, blank = True)
+      
+      key = models.CharField(max_length=100, null = True, unique=True)
+      
+      def __str__(self):
+            return self.title
+      
+      def get_absolute_url(self):
+            return reverse("books/detail", kwargs = {"id":self.key})
+
+      def get_delete_url(self):
+            return reverse("books/favourite-delete", kwargs={"id":self.key})  
 
 
  

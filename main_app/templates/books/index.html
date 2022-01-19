@@ -42,9 +42,24 @@
                                   <img class="book-card__image" src="{{book.image}}" alt="{{book.title}}">
                             </div>
                             <div class="book-card__content-wrapper">
-                                  <a href="{{book.url}}?img={{book.image}}" class="book-card__title">{{book.title}}</a>
+                                  <a href="{{book.url}}?img={{book.image}}" class="book-card__title">{{book.title}} {{ book.key }}</a>
                                   <p class="book-card__author">{{book.author_name}}</p>
-                                  <button data-access="{{request.user.is_authenticated}}" type="submit" form="{{book.key}}" class="book-card__submit">SOMETHING</button>
+                                  <button data-access="{{request.user.is_authenticated}}" type="submit" form="{{book.key}}" class="book-card__submit">Add/Rent Book</button>
+                                  
+                                  <!-- ADD/RENT BOOK FORM -->
+                                  <!-- <form action="{ url 'rent_book' member.id book.key }" method="POST"> -->
+                                        <!-- {% csrf_token %} -->
+                                    <!-- <button class="btn" type="submit">Add</button> -->
+                                  <!-- </form> -->
+
+                                  <form id="{{book.key}}" method="POST" action="{% url 'add_to_rent' %}" class="book-card__form">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{book.key}}" name="key">
+                                    <input type="hidden" name="title" value="{{book.title}}" />
+                                    <input type="hidden" name="author_name" value="{{book.author_name}}" />
+                                    <input type="hidden" name="image" value="{{book.image}}" />
+                                  </form>
+
                             </div>
                       </article>
 

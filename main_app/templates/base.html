@@ -36,7 +36,7 @@
             <!-- The SuperUser cannot interact with the features of the app -->
             
               {% if user.is_authenticated %}
-                <li><a href="{% url 'book_create' %}">Add Book</a></li>
+                <!-- <li><a href="{ url 'book_create' }">Add Book</a></li> -->
                 <li><a href="{% url 'books' %}">Books</a></li>
                 <li><a href="{% url 'clubs_index' %}">Clubs</a></li>
   

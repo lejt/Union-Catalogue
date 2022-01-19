@@ -1,7 +1,6 @@
-
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Club
+from .models import *
 from django import forms
 
 class LoginForm(UserCreationForm):
@@ -32,3 +31,22 @@ class AddClubForm(ModelForm):
         model = Club
         # name and desc should be required, everything else can be added later
         fields = ['name', 'meet_date', 'location', 'desc']
+
+
+# TESTING -------------------------------------------------------------
+
+def string_list_to_string(string):
+      return string.replace("[", "").replace("]", "").replace("\"", "").replace("'", "")
+
+class RentBookForm(ModelForm):
+      class Meta:
+         model = RentBook
+         fields = ['title', 'image', 'author_name', 'key']
+         
+      def clean(self):
+            cleaned_data = super(RentBookForm, self).clean()
+            cleaned_data["key"] = string_list_to_string(cleaned_data["key"]).split("/")[-1]
+            cleaned_data["title"] = string_list_to_string(cleaned_data["title"])
+            cleaned_data["author_name"] = string_list_to_string(cleaned_data["author_name"])
+            cleaned_data["image"] = string_list_to_string(cleaned_data["image"])
+            return cleaned_data

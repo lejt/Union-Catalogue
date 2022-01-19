@@ -6,8 +6,21 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('members/', views.members_index, name='members_index'),
     path('books/', views.books_index, name="books"),
-    path('books/<int:books_id>/', views.books_detail, name="books_detail"),
-    path('books/create/', views.BookCreate.as_view(), name='book_create'),
+    # path('books/<int:books_id>/', views.books_detail, name="books_detail"),
+    # path('books/create/', views.BookCreate.as_view(), name='book_create'),
+
+    # path('books/rent/', views.rent_book, name='rent_book'),
+
+
+    # testing -------------------
+    # path("favourite/", views.favourite_page, name = "favourite"),
+    # path("add-favourite/", views.add_to_favourite_books, name="add_to_favourite"),
+    # path("delete-favourite/<str:id>", views.delete_favourite, name="favourite-delete"),
+
+
+    path("rentbook/", views.add_to_rent_books, name="add_to_rent"),
+
+
 
     # member + staff details page here - WIP 
     path('members/<int:member_id>/', views.members_detail, name='members_detail'),

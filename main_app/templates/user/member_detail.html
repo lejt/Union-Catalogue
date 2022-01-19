@@ -11,5 +11,25 @@
 <p>email: {{ member.user.email }}</p>
 <p>address: {{ member.user.address }}</p>
 
+<!-- <ul>
+    <li>{{ member.books.all }}</li>
+</ul> -->
+
+<h4>RENTED BOOKS for Member ID ({{member.id}}):</h4>
+<table>
+    <tr>
+        <th>Book</th>
+        <th>Author</th>
+        <th>Key</th>
+    </tr>
+    {% for book in member.books.all %}
+        <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author_name }}</td>
+            <td>{{ book.key }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
 
 {% endblock %}

@@ -9,6 +9,7 @@ urlpatterns = [
     # member + staff details page here 
     path('members/<int:member_id>/', views.members_detail, name='members_detail'),
     path('staffs/<int:staff_id>/', views.staffs_detail, name='staffs_detail'),
+    path('members/<int:pk>/update/', views.UserUpdate.as_view(), name='members_update'),
 
     # books related path
     path('books/', views.books_index, name="books"),

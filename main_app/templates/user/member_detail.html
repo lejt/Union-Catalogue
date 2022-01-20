@@ -10,13 +10,13 @@
 <p>username: {{ member.user.username }}</p>
 <p>email: {{ member.user.email }}</p>
 <p>address: {{ member.user.address }}</p>
+<!-- include a 'member since ... date' -->
+
 <div class="card-action">
     <a href="{% url 'members_update' member.id %}">Update Info</a>
 </div>
 
-<!-- <ul>
-    <li>{{ member.books.all }}</li>
-</ul> -->
+
 
 <h4>RENTED BOOKS for Member ID ({{member.id}}):</h4>
 <table>

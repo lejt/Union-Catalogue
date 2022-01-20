@@ -116,7 +116,9 @@ def add_club(request):
 
         # new_club.members.add(Member.objects.get(id=member_id))
 
+        # saving the member here updates the join_club_date to current time
         Member.objects.get(id=member_id).save()
+
         print(new_club.members.all())
         print(Member.objects.get(id=member_id))
         print(Member.objects.filter(user=request.user.id)[0].id)
@@ -149,10 +151,21 @@ def join_club(request, club_id):
         user = User.objects.get(id=request.user.id)
         member_id = user.member.id
 
+
+    Member.objects.get(id=member_id).save()
     print(club.members.all())
     club.members.add(member_id)
     print(club.members.all())
 
+    return redirect('clubs_detail', club_id=club_id)
+
+def delete_club(request, club_id):
+    Club.objects.get(id=club_id).delete()
+    return redirect('clubs_index')
+
+def unassoc_memb(request, club_id, member_id):
+    # Club.objects.get(id=club_id).members.filter(id=member_id).delete()
+    Club.objects.get(id=club_id).members.remove(Member.objects.get(id=member_id))
     return redirect('clubs_detail', club_id=club_id)
 
 def books_index(request):
@@ -221,5 +234,3 @@ class UserUpdate(UpdateView):
     fields = ['first_name', 'last_name', 'email', 'address']
  
     
-def get_current_time():
-    return 

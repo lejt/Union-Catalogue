@@ -2,6 +2,33 @@
 
 {% block content %}
 
+{% if user.user_type == "S" or user.member == club.members.last %}
+    <button data-target="modal1" class="btn red modal-trigger">Delete Club</button>
+{% endif %}
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Are you sure you want to delete club: {{ club.name }}?</h5>
+    </div>
+        <div class="modal-body">
+            <form action="{% url 'delete_club' club.id %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-footer">
+                    <button class="btn red" type="submit">Delete</button> 
+            </form>
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
+            </div>
+        </div>
+  </div>
+</div>
+
+
+
+
+
+
 <h1>{{ club.name }} Details</h1>
 <ul>
     <!-- club president is the last member of a club since object is ordered by date -->
@@ -20,8 +47,6 @@
 <h6>Description:</h6>
 <p>{{ club.desc }}</p>
 
-
-
 <!-- this should be only seen by staff -->
 {% if user.user_type == 'S' %}
     <h3>Club's members:</h3>
@@ -37,9 +62,8 @@
                 <td>{{ member.id }}</td>
                 <td>{{ member.user.first_name }} {{ member.user.last_name }}</td>
                 <td>{{ member.join_club_date }}</td>
-        {% endfor %}
-                <td></td>
             </tr>
+        {% endfor %}
     </table>
 {% else %}
     
@@ -49,10 +73,26 @@
             {% csrf_token %}
             <button class="btn" type="submit">Join Now!</button>
         </form>
+    {% else %}
+        {% if user.member != club.members.last %}
+            <h4>You are currently a member of this club</h4>
+            <form action="{% url 'unassoc_memb' club.id user.member.id %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-footer">
+                    <button class="btn red" type="submit">Leave Club</button> 
+            </form>
+        {% endif %}
     {% endif %}
 
 {% endif %}
 
 
+
+<script>
+    // const modal = document.querySelectorAll('.modal');
+    $(document).ready(function(){
+      $('.modal').modal();
+    });
+</script>
 
 {% endblock %}

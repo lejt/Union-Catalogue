@@ -9,13 +9,15 @@
             <th>Name (Last, First)</th>
             <th>No. Books Rented</th>
             <th>No. Clubs Joined</th>
+            <th>Membership Start Date</th>
         </tr>
         {% for member in members %}
             <tr>
                 <td><a href="{% url 'members_detail' member.id %}">{{ member.id }}</a></td>
                 <td>{{ member.user.last_name}}, {{ member.user.first_name}}</td>
+                <td>{{ member.books.count }}</td>
                 <td>-</td>
-                <td>-</td>
+                <td>{{ member.create_date }}</td>
             </tr>
         {% endfor %}
     </table>

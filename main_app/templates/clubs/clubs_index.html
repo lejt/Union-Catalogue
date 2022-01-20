@@ -22,7 +22,9 @@
 <!-- --------------------------------------------------------------------------------------------- -->
 <!-- Modal Testing - Materialize -->
 <!-- Modal Trigger -->
-<button data-target="modal1" class="btn modal-trigger">Add Club</button>
+{% if user.user_type == 'M' %}
+    <button data-target="modal1" class="btn modal-trigger">Add Club</button>
+{% endif %}
           
 <!-- Modal Structure -->
 <div id="modal1" class="modal">
@@ -40,6 +42,7 @@
             </div>
         </div>
     </form>
+
   </div>
 </div>
 <!-- --------------------------------------------------------------------------------------------- -->

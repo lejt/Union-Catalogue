@@ -98,8 +98,31 @@ def add_club(request):
         # new_club.save()
         # new_club is like Club.objects.last(), the newest created club should be the last obj
         # new_club id is only available after the .save()
+        if request.user.user_type == 'M':
+            # find member_id based on request.user.id (dynamic)
+            user = User.objects.get(id=request.user.id)
+            member_id = user.member.id
 
+        
+        # print(Member.objects.get(id=member_id).join_club_date)
+        # print(Member.objects.get(id=member_id).create_date)
+        # print('2',Member.objects.filter(user=request.user.id)[0].join_club_date)
+        # print('2',Member.objects.filter(user=request.user.id)[0].create_date)
+
+        
+
+        # print(Member.objects.get(id=member_id).join_club_date)
+        # print(Member.objects.get(id=member_id).create_date)
+
+        # new_club.members.add(Member.objects.get(id=member_id))
+
+        Member.objects.get(id=member_id).save()
+        print(new_club.members.all())
+        print(Member.objects.get(id=member_id))
+        print(Member.objects.filter(user=request.user.id)[0].id)
+        print(Member.objects.filter(id=member_id))
         new_club.members.add(Member.objects.filter(user=request.user.id)[0].id)
+
 
         # club = Club.objects.get(id=club_id)
         # club.members.add(user_id)
@@ -110,7 +133,27 @@ def add_club(request):
 
 def clubs_detail(request, club_id):
     club = Club.objects.get(id=club_id)
+
+    # print(club)
+    # member_id = Member.objects.filter(user=request.user.id).first().id
+    # member = Member.objects.get(id=member_id)
+
     return render(request, 'clubs/clubs_detail.html', {'club': club})
+
+def join_club(request, club_id):
+    club = Club.objects.get(id=club_id)
+
+    # member_id = Member.objects.filter(user=request.user.id)..id
+    if request.user.user_type == 'M':
+        # find member_id based on request.user.id (dynamic)
+        user = User.objects.get(id=request.user.id)
+        member_id = user.member.id
+
+    print(club.members.all())
+    club.members.add(member_id)
+    print(club.members.all())
+
+    return redirect('clubs_detail', club_id=club_id)
 
 def books_index(request):
 
@@ -178,5 +221,5 @@ class UserUpdate(UpdateView):
     fields = ['first_name', 'last_name', 'email', 'address']
  
     
-
-      
+def get_current_time():
+    return 

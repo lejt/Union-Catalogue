@@ -20,6 +20,8 @@ urlpatterns = [
     path('clubs/', views.clubs_index, name='clubs_index'),
     path('clubs/add_club/', views.add_club, name='add_club'),
     path('clubs/<int:club_id>/', views.clubs_detail, name='clubs_detail'),
+    path('clubs/<int:club_id>/join_club/', views.join_club, name='join_club'),
+    
 
     # --------------------------------------------------------------------
     # no login path needed, already built-in

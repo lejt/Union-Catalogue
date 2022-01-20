@@ -4,34 +4,54 @@
 
 <h1>{{ club.name }} Details</h1>
 <ul>
-    <!-- club president is the first member of a club -->
-    <li>Club President: {{ club.members.first }}</li>
+    <!-- club president is the last member of a club since object is ordered by date -->
+    <li>Club President: {{ club.members.last }}</li>
     <li>No. of members: {{ club.members.count }}</li>
 </ul>
-
+<hr>
 <h5>Meeting Details:</h5>
 <ul>
-    <li>Next Meeting Date: -----{{ club.meet_date }}-----</li>
-    <li>Meeting Location: -----{{ club.get_location_display }}-----</li>
+    <li>Next Meeting Date: ----------{{ club.meet_date }}----------</li>
+    <li>Meeting Location: ----------{{ club.get_location_display }}----------</li>
 </ul>
+<hr>
+<h6>Book of the Club: </h6>
+<hr>
+<h6>Description:</h6>
+<p>{{ club.desc }}</p>
+
+
 
 <!-- this should be only seen by staff -->
-<h3>Club's members:</h3>
+{% if user.user_type == 'S' %}
+    <h3>Club's members:</h3>
 
-<table>
-    <tr>
-        <th>Member ID</th>
-        <th>Member</th>
-        <th>Join Date</th>
-    </tr>
-    {% for member in club.members.all %}
+    <table>
         <tr>
-            <td>{{ member.id }}</td>
-            <td>{{ member.user.first_name }} {{ member.user.last_name }}</td>
-            <td></td>
+            <th>Member ID</th>
+            <th>Member</th>
+            <th>Join Date</th>
         </tr>
-    {% endfor %}
-</table>
+        {% for member in club.members.all %}
+            <tr>
+                <td>{{ member.id }}</td>
+                <td>{{ member.user.first_name }} {{ member.user.last_name }}</td>
+                <td>{{ member.join_club_date }}</td>
+        {% endfor %}
+                <td></td>
+            </tr>
+    </table>
+{% else %}
+    
+    {% if user.member not in club.members.all %}
+        <h3>Join Club</h3>
+        <form action="{% url 'join_club' club.id %}" method="POST">
+            {% csrf_token %}
+            <button class="btn" type="submit">Join Now!</button>
+        </form>
+    {% endif %}
+
+{% endif %}
 
 
 

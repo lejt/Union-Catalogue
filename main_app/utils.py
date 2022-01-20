@@ -2,17 +2,17 @@ from django.urls.base import reverse
 import requests
 
 # CONFIG
-BASE_SEARCH_API_URL:str = "http://openlibrary.org/search.json"
-BASE_IMAGE_API_URL:str = "https://covers.openlibrary.org/b/{0}/{1}-{2}.jpg"
-BASE_BOOK_API_URL:str = "https://openlibrary.org/works/{0}.json"
-BASE_IMAGE_KEYS:list[str] = [
+BASE_SEARCH_API_URL = "http://openlibrary.org/search.json"
+BASE_IMAGE_API_URL = "https://covers.openlibrary.org/b/{0}/{1}-{2}.jpg"
+BASE_BOOK_API_URL = "https://openlibrary.org/works/{0}.json"
+BASE_IMAGE_KEYS = [
       "cover_i",
       "isbm",
       "oclc",
       "lccn",
       "olid"
 ]
-BASE_IMAGE_URL = "/static/images/base.jpg"
+BASE_IMAGE_URL = "/static/images/base.png"
 BASE_IMAGE_SIZE = "M"
 
 BOOK_KEYS = [
@@ -22,38 +22,11 @@ BOOK_KEYS = [
 ] + BASE_IMAGE_KEYS
 
 
-def prepate_data(source:list, needed_keys:list[str], quantity:int = None, *args, **kwargs) -> dict:
-      # if we get quantity make slice of list
-      if quantity:
-            # get only first {quantity} element (ex. first 5 elements)
-            source = source[:quantity]
-      
-      # init result list
-      result:list = []
-      
-      for source_dict in source:
-            # create new dict contains only needed_key, to reduce size of whole dictionary
-            new_dict = {key: source_dict[key] for key in source_dict if key in needed_keys}
-            
-            # get first given author_name
-            new_dict['author_name'] = new_dict.get("author_name", [""])[0]
-            new_dict['key'] = new_dict.get("key", "").split("/")[-1]
-            # new_dict['url'] = reverse("books:detail", kwargs = {"id": new_dict['key']})
-            
-            # append new dict contains less keys - values pairs
-            result.append(new_dict)
-      
-      return result
-
-def create_search_url(search_text:str, *args, **kwargs):
-      # Just return search url for given search text
-      return BASE_SEARCH_API_URL + '?q=' + search_text
-
-def get_image_url(key_name:str, image_id:str, size:str = BASE_IMAGE_SIZE, *args, **kwargs):
+def get_image_url(key_name, image_id, size = BASE_IMAGE_SIZE):
       # Just return image url with given attributes
       return BASE_IMAGE_API_URL.format(key_name, image_id, size)
 
-def add_image_to_book(book_dict:dict) -> dict:
+def add_image_to_book(book_dict):
       book_dict['image'] = BASE_IMAGE_URL
       
       for image_key in BASE_IMAGE_KEYS:
@@ -63,32 +36,39 @@ def add_image_to_book(book_dict:dict) -> dict:
                               image_key = "id"
                               image_id_list = [image_id_list,]
                         book_dict['image'] = get_image_url(key_name = image_key, image_id = image_id_list[0])
-      
                         break
       return book_dict
 
-
-def add_images_to_books(books_list:list[dict]) -> list[dict]:
+def add_images_to_books(books_list):
       return list(map(add_image_to_book, books_list))
 
-def search_books(search_text:str, quantity:int = None, *args, **kwargs) -> list[dict]:
-      # create request_url for given search text
-      request_url = create_search_url(search_text)
-      
-      '''
-            1. First make request using requests.get
-            2. Second serialize response using .json() method
-            3. Third get all books from data dictionary using 'docs' key
-            4. At last prepare data using prepare_data function and quantity
-      '''
-      books:list[dict] = prepate_data(
-            requests.get(request_url).json()['docs'],
-            BOOK_KEYS,
-            quantity = quantity
-      )
+def prepare_data(response, book_keys, no_of_results):
+
+      response = response[:no_of_results]
+      result = []
+
+      for res_dict in response:
+            # create new dict containing only neccessary book keys to reduce size
+            new_dict = {key: res_dict[key] for key in res_dict if key in book_keys}
+            
+            # take only the first author of the book
+            new_dict['author_name'] = new_dict.get("author_name", [""])[0]
+            new_dict['key'] = new_dict.get("key", "").split("/")[-1]
+            
+            # append new dict contains less keys - values pairs
+            result.append(new_dict)
+
+      return result
+
+def search_books(search_query):
+
+      request_url = BASE_SEARCH_API_URL + '?q=' + search_query
+      books = requests.get(request_url).json()['docs']
+
+      # narrow down search results to 20 and outputs only the necessary keys for reading
+      books = prepare_data(books, BOOK_KEYS, 20)
 
       # add images urls for books
       books = add_images_to_books(books)
-      
-      return books
 
+      return books

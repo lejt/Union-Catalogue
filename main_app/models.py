@@ -31,6 +31,8 @@ class Member(models.Model):
     def get_absolute_url(self):
         return reverse('members_detail', kwargs={'members_id': self.id})
 
+    class Meta:
+        ordering = ['-join_club_date']
 
 class Staff(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

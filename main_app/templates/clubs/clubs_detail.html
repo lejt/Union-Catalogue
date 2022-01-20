@@ -4,7 +4,7 @@
 
 <h1>{{ club.name }} Details</h1>
 <ul>
-    <!-- club president is the last member of a club -->
+    <!-- club president is the last member of a club since object is ordered by date -->
     <li>Club President: {{ club.members.last }}</li>
     <li>No. of members: {{ club.members.count }}</li>
 </ul>
@@ -42,11 +42,15 @@
             </tr>
     </table>
 {% else %}
-    <h3>Join Club</h3>
-    <form action="{% url 'join_club' club.id %}" method="POST">
-        {% csrf_token %}
-        <button class="btn" type="submit">Join Now!</button>
-    </form>
+    
+    {% if user.member not in club.members.all %}
+        <h3>Join Club</h3>
+        <form action="{% url 'join_club' club.id %}" method="POST">
+            {% csrf_token %}
+            <button class="btn" type="submit">Join Now!</button>
+        </form>
+    {% endif %}
+
 {% endif %}
 
 

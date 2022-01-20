@@ -103,4 +103,6 @@ class FavouriteBook(models.Model):
             return reverse("books/favourite-delete", kwargs={"id":self.key})  
 
 
+
+
  

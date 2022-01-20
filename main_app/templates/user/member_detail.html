@@ -10,6 +10,9 @@
 <p>username: {{ member.user.username }}</p>
 <p>email: {{ member.user.email }}</p>
 <p>address: {{ member.user.address }}</p>
+<div class="card-action">
+    <a href="{% url 'members_update' member.id %}">Update Info</a>
+</div>
 
 <!-- <ul>
     <li>{{ member.books.all }}</li>

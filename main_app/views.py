@@ -131,6 +131,9 @@ def books_index(request):
         if len(books) == 0:
                 message = "No books was found."
    
+    # view raw json data from search query
+    # print(books)
+
     return render(request, "books/index.html", {
         "books": books,
         "message":message

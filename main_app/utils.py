@@ -71,24 +71,24 @@ def add_image_to_book(book_dict:dict) -> dict:
 def add_images_to_books(books_list:list[dict]) -> list[dict]:
       return list(map(add_image_to_book, books_list))
 
-def search_books(search_text:str, quantity:int = None, *args, **kwargs) -> list[dict]:
-      # create request_url for given search text
-      request_url = create_search_url(search_text)
+# def search_books(search_text:str, quantity:int = None, *args, **kwargs) -> list[dict]:
+#       # create request_url for given search text
+#       request_url = create_search_url(search_text)
       
-      '''
-            1. First make request using requests.get
-            2. Second serialize response using .json() method
-            3. Third get all books from data dictionary using 'docs' key
-            4. At last prepare data using prepare_data function and quantity
-      '''
-      books:list[dict] = prepate_data(
-            requests.get(request_url).json()['docs'],
-            BOOK_KEYS,
-            quantity = quantity
-      )
+#       '''
+#             1. First make request using requests.get
+#             2. Second serialize response using .json() method
+#             3. Third get all books from data dictionary using 'docs' key
+#             4. At last prepare data using prepare_data function and quantity
+#       '''
+#       books:list[dict] = prepate_data(
+#             requests.get(request_url).json()['docs'],
+#             BOOK_KEYS,
+#             quantity = quantity
+#       )
 
-      # add images urls for books
-      books = add_images_to_books(books)
+#       # add images urls for books
+#       books = add_images_to_books(books)
       
-      return books
+#       return books
 

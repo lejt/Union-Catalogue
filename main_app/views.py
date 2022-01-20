@@ -232,5 +232,11 @@ def add_to_rent_books(request):
 class UserUpdate(UpdateView):
     model = User
     fields = ['first_name', 'last_name', 'email', 'address']
+    success_url = '/members/'
+    
+
+
+
+    
  
     

@@ -15,16 +15,12 @@ class User(AbstractUser):
     address = models.CharField(max_length=200, null=True)
     user_type = models.CharField(max_length=1, choices=TYPE_CHOICES, default='M')
 
-
     def __str__(self):
-        # return f"{self.get_user_type_display()}"
         return f"{self.first_name} {self.last_name}"
-
 
 # User split into either Member or Staff --------------------------------
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # books_rented = models.ManyToManyField(Books)
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}"

@@ -2,32 +2,20 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # view functions
     path('', views.home, name='home'),
+    # only accessible by staff
     path('members/', views.members_index, name='members_index'),
-    path('books/', views.books_index, name="books"),
-    # path('members/<int:member_id>/unassoc_book/<int:book_key>/', views.unassoc_book, name='unassoc_book'),
-    # path('books/<int:books_id>/', views.books_detail, name="books_detail"),
-    # path('books/create/', views.BookCreate.as_view(), name='book_create'),
 
-    # path('books/rent/', views.rent_book, name='rent_book'),
-
-
-    # testing -------------------
-    # path("favourite/", views.favourite_page, name = "favourite"),
-    # path("add-favourite/", views.add_to_favourite_books, name="add_to_favourite"),
-    # path("delete-favourite/<str:id>", views.delete_favourite, name="favourite-delete"),
-
-
-    path("rentbook/", views.add_to_rent_books, name="add_to_rent"),
-
-
-
-    # member + staff details page here - WIP 
+    # member + staff details page here 
     path('members/<int:member_id>/', views.members_detail, name='members_detail'),
     path('staffs/<int:staff_id>/', views.staffs_detail, name='staffs_detail'),
+
+    # books related path
+    path('books/', views.books_index, name="books"),
+    path("rentbook/", views.add_to_rent_books, name="add_to_rent"),
+    path('members/<int:member_id>/unassoc_book/<str:book_key>/', views.unassoc_book, name='unassoc_book'),
     
-    # club related urls
+    # club related paths
     path('clubs/', views.clubs_index, name='clubs_index'),
     path('clubs/add_club/', views.add_club, name='add_club'),
     path('clubs/<int:club_id>/', views.clubs_detail, name='clubs_detail'),

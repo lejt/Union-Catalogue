@@ -22,20 +22,25 @@
         <th>Author</th>
         <th>Key</th>
     </tr>
-    {% for book in member.books.all %}
-        <tr>
-            <td>{{ book.title }}</td>
-            <td>{{ book.author_name }}</td>
-            <td>{{ book.key }}</td>
-            <td>
-                <form action="{% url 'unassoc_book' member.id book.key %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" class="btn">Return</button>
-                </form>
-                
-            </td>
-        </tr>
-    {% endfor %}
+    {% if member.books.count > 0 %}
+        {% for book in member.books.all %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author_name }}</td>
+                <td>{{ book.key }}</td>
+                <td>
+                    <form action="{% url 'unassoc_book' member.id book.key %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">Return</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    {% else %}
+            <tr>
+                <td>NO BOOKS RENTED</td>
+            </tr>
+    {% endif %}
 </table>
 
 

@@ -41,15 +41,16 @@
                               <p>{{ book.key }}</p>
                         
                               <br>
-                              <button data-access="{{request.user.is_authenticated}}" type="submit" form="{{book.key}}">Rent Book</button>
-      
-                              <form id="{{book.key}}" method="POST" action="{% url 'add_to_rent' %}" class="book-card__form">
-                                    {% csrf_token %}
-                                    <input type="hidden" value="{{book.key}}" name="key">
-                                    <input type="hidden" name="title" value="{{book.title}}" />
-                                    <input type="hidden" name="author_name" value="{{book.author_name}}" />
-                                    <input type="hidden" name="image" value="{{book.image}}" />
-                              </form>
+                              {% if user.user_type != 'S' %}
+                                    <button data-access="{{request.user.is_authenticated}}" type="submit" form="{{book.key}}">Rent Book</button>
+                                    <form id="{{book.key}}" method="POST" action="{% url 'add_to_rent' %}" class="book-card__form">
+                                          {% csrf_token %}
+                                          <input type="hidden" value="{{book.key}}" name="key">
+                                          <input type="hidden" name="title" value="{{book.title}}" />
+                                          <input type="hidden" name="author_name" value="{{book.author_name}}" />
+                                          <input type="hidden" name="image" value="{{book.image}}" />
+                                    </form>
+                              {% endif %}
                         </div>
                   </div>
             </div>

@@ -1,9 +1,11 @@
 from collections import UserString
+from re import template
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
 from .forms import AddClubForm, SignUpForm, UserSignUpForm, RentBookForm
+from django.views.generic.edit import UpdateView
 
 from main_app.utils import search_books
 
@@ -167,4 +169,11 @@ def add_to_rent_books(request):
                 print(form.errors)
         
     return redirect('members_detail', member_id=member_id)
+
+class UserUpdate(UpdateView):
+    model = User
+    fields = ['first_name', 'last_name', 'email', 'address']
+ 
+    
+
       

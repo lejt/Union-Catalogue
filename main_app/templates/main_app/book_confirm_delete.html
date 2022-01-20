@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Return Book</h1>
+
+<h4>Return the book {{book.title}} ?</h4>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Yes" class="btn">
+</form>
+<br>
+<a href="{% url 'members_detail' member.id %}">NO</a>
+
+{% endblock %}

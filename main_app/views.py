@@ -6,10 +6,22 @@ from django.views.generic.edit import CreateView
 from .models import *
 from .forms import AddClubForm, SignUpForm, UserSignUpForm, RentBookForm
 
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import  DeleteView
+
+
 # from django.views.generic import ListView
 
 from main_app.utils import search_books
+
+
+
+    # def get_succes_url(self):
+    #     return reverse() 
+# def unassoc_book(request, book_key, member_id):
+#     print(Member.objects.get(id=member_id).books.key[1])
+# #   Member.objects.get(id=member_id).books.key[1].remove(books.key[1]==book_key)
+#     return redirect('members_detail', member_id=member_id)
+
 
 def home(request):
     return render(request, 'home.html')
@@ -148,7 +160,7 @@ def books_index(request):
 
 
 
-
+    print(Member.objects.get(id=member_id).books.key[1])
     return render(request, "books/index.html", {
         "books": books,
         "message":message

@@ -27,6 +27,13 @@
             <td>{{ book.title }}</td>
             <td>{{ book.author_name }}</td>
             <td>{{ book.key }}</td>
+            <td>
+                <form action="{% url 'unassoc_book' member.id book.key %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Return</button>
+                </form>
+                
+            </td>
         </tr>
     {% endfor %}
 </table>

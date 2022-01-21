@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import *
 from .forms import AddClubForm, SignUpForm, UserSignUpForm, RentBookForm
 from django.views.generic.edit import UpdateView
+from django.urls import reverse
 
 from main_app.utils import search_books
 
@@ -229,8 +230,36 @@ def add_to_rent_books(request):
         
     return redirect('members_detail', member_id=member_id)
 
+
+
 class UserUpdate(UpdateView):
     model = User
     fields = ['first_name', 'last_name', 'email', 'address']
+    def get_object(self, queryset=None):
+        return self.request.user
+    def get_success_url(self):
+        return reverse('members_detail', kwargs={'member_id': self.object.id},)
+        
+        
+
+
+  
+
+
+
+    
+
+
+
+
+
+
+
+   
+    
+
+
+
+    
  
     

@@ -12,9 +12,12 @@
 <p>address: {{ member.user.address }}</p>
 <!-- include a 'member since ... date' -->
 
-<div class="card-action">
-    <a href="{% url 'members_update' user.id %}">Update Info</a>
-</div>
+{% if user.user_type == 'M' %}
+    <div class="card-action">
+        <a href="{% url 'members_update' user.id %}">Update Info</a>
+    </div>
+{% endif %}
+
 
 
 

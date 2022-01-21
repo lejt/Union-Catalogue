@@ -43,7 +43,7 @@ body.the-datepicker-page {
 .the-datepicker__main {
   width: auto;
   height: auto;
-  background-color: #fff;
+  background-color: rgb(133, 45, 173);
   border: 1px solid #ccc;
   border-radius: 0.3em;
   font-family: Arial, Helvetica, sans-serif;
@@ -78,7 +78,7 @@ body.the-datepicker-page {
   text-align: center;
   font-weight: normal;
   text-transform: uppercase;
-  color: #666;
+  color: rgb(178, 174, 192);
   font-size: 0.85em;
 }
 .the-datepicker__main a.the-datepicker__button {

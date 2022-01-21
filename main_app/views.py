@@ -241,23 +241,7 @@ class UserUpdate(UpdateView):
         return reverse('members_detail', kwargs={'member_id': self.object.id},)
         
         
-# class UserUpdate(UpdateView):
-#   model = Member
-#   fields = ['first_name', 'last_name', 'email', 'address']
 
-#   def get(self, request, pk):
-#     self.object = self.get_object()
-#     if self.object.user == self.request.user:
-#       return super().get(self, request, pk)
-#     else:
-#       return redirect('/members/')
-
-#   def post(self, request, pk):
-#     self.object = self.get_object()
-#     if self.object.user == self.request.user:
-#       return super().post(self, request, pk)
-#     else:
-#       return redirect('/members/')
 
   
 

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>UPDATE CLUB PAGE</h1>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Changes</button>
+</form>
+
+
+<script>
+
+    // js needed to show calendar on club creation
+    const input = document.getElementById('id_meet_date');
+    const datepicker = new TheDatepicker.Datepicker(input);
+    datepicker.options.setInputFormat("Y-m-d");
+    datepicker.render();
+
+    // add JS to initialize select below + include materialize script library to show dropdown of location
+    const selectEl = document.getElementById('id_location');
+    M.FormSelect.init(selectEl);
+</script>
+
+{% endblock %}

@@ -29,33 +29,79 @@
 
       <div class="row">
             {% for book in books %}
-            <div class="col s4">
-                  <div class="card query-result">
-                        <div class="card-image">
-                              <img class="book-card__image" src="{{book.image}}" alt="{{book.title}}">
-                        </div>
-                        <div class="card-content">
+                  <div class="col s4">
+                        <div class="card query-result">
+                              <div class="card-image">
+                                    <img class="book-card__image" src="{{book.image}}" alt="{{book.title}}">
+                              </div>
+                              <div class="card-content">
 
-                              <a href="{{book.url}}?img={{book.image}}">{{book.title}} </a>
-                              <p>{{book.author_name}}</p>
-                              <p>{{ book.key }}</p>
-                        
-                              <br>
-                              {% if user.user_type != 'S' %}
-                                    <button data-access="{{request.user.is_authenticated}}" type="submit" form="{{book.key}}">Rent Book</button>
-                                    <form id="{{book.key}}" method="POST" action="{% url 'add_to_rent' %}" class="book-card__form">
-                                          {% csrf_token %}
-                                          <input type="hidden" value="{{book.key}}" name="key">
-                                          <input type="hidden" name="title" value="{{book.title}}" />
-                                          <input type="hidden" name="author_name" value="{{book.author_name}}" />
-                                          <input type="hidden" name="image" value="{{book.image}}" />
-                                    </form>
-                              {% endif %}
+                                    <a href="{{book.url}}?img={{book.image}}">{{book.title}} </a>
+                                    <p>{{book.author_name}}</p>
+                                    <p>{{ book.key }}</p>
+                              
+                                    <br>
+                                    {% if user.user_type != 'S' %}
+                                          <button data-access="{{request.user.is_authenticated}}" type="submit" form="{{book.key}}">Rent Book</button>
+                                          <form id="{{book.key}}" method="POST" action="{% url 'add_to_rent' %}" class="book-card__form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="key" value="{{book.key}}" />
+                                                <input type="hidden" name="title" value="{{book.title}}" >
+                                                <input type="hidden" name="author_name" value="{{book.author_name}}" />
+                                                <input type="hidden" name="image" value="{{book.image}}" />
+                                          </form>
+                                          <button data-target="modal1" class="modal-trigger">Add to Book Club</button>
+                                          
+                                          <!-- Modal Structure -->
+                                          <div id="modal1" class="modal">
+                                                <div class="modal-content">
+                                                      <div class="modal-header">
+                                                      <h5 class="modal-title">Add to your Book Club</h5>
+                                                      <form method="POST" action="{% url 'add_to_book_club' %}">
+                                                            <div class="modal-body">
+                                                                  {% csrf_token %}
+                                                      
+                                                                  <input type="hidden" name="key" value="{{book.key}}" />
+                                                                  <input type="hidden" name="title" value="{{book.title}}" >
+                                                                  <input type="hidden" name="author_name" value="{{book.author_name}}" />
+                                                                  <input type="hidden" name="image" value="{{book.image}}" />
+
+                                                                  <br>Select a Club you are in charge of:<br>
+                                                                  {% for club in part_of_clubs %}
+                                                                        {% if club.members.last == user.member %}
+                                                                              <p>
+                                                                                    <label><input type="radio" name="club-selected" value="{{ club.id }}"/><span>{{ club.name }}</span></label>
+                                                                              </p>
+                                                                        {% endif %}
+                                                                  {% endfor %}
+
+                                                            </div>    
+                                                            <div class="modal-footer">
+                                                                  <button data-access="{{request.user.is_authenticated}}" type="submit">Add!</button>
+                                                                  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                                                            </div>
+                                                      </form>    
+                                                </div>
+                                          </div>
+                                    {% endif %}
+                              </div>
                         </div>
                   </div>
-            </div>
             {% endfor %} 
       </div>
 </div>
+
+{% if user.user_type == 'M' %}
+{% endif %}
+          
+
+
+<script>
+      // const modal = document.querySelectorAll('.modal');
+      $(document).ready(function(){
+        $('.modal').modal();
+      });
+  
+</script>
 
 {% endblock %}

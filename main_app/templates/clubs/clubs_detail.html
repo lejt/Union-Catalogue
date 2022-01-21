@@ -24,11 +24,6 @@
   </div>
 </div>
 
-
-
-
-
-
 <h1>{{ club.name }} Details</h1>
 <ul>
     <!-- club president is the last member of a club since object is ordered by date -->
@@ -43,9 +38,18 @@
 </ul>
 <hr>
 <h6>Book of the Club: </h6>
+{{ club.books.all }}
 <hr>
 <h6>Description:</h6>
 <p>{{ club.desc }}</p>
+
+
+{% if user.member == club.members.last %}
+    <form action="{% url 'update_club' club.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Update Club Details</button>
+    </form>
+{% endif %}
 
 <!-- this should be only seen by staff -->
 {% if user.user_type == 'S' %}
@@ -85,7 +89,6 @@
     {% endif %}
 
 {% endif %}
-
 
 
 <script>

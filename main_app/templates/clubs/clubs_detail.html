@@ -38,7 +38,7 @@
 </ul>
 <hr>
 <h6>Book of the Club: </h6>
-{{ club.books.all }}
+{{ club.books.first.title }} By {{ club.books.first.author_name }}
 <hr>
 <h6>Description:</h6>
 <p>{{ club.desc }}</p>

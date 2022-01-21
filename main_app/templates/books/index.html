@@ -36,7 +36,7 @@
                               </div>
                               <div class="card-content">
 
-                                    <a href="{{book.url}}?img={{book.image}}">{{book.title}} </a>
+                                    <a href="#">{{book.title}} </a>
                                     <p>{{book.author_name}}</p>
                                     <p>{{ book.key }}</p>
                               
@@ -74,7 +74,7 @@
                                                                               </p>
                                                                         {% endif %}
                                                                   {% endfor %}
-
+                                                                  Note: you will override the previous club book if one already exists.
                                                             </div>    
                                                             <div class="modal-footer">
                                                                   <button data-access="{{request.user.is_authenticated}}" type="submit">Add!</button>

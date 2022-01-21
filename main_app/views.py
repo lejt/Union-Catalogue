@@ -256,8 +256,10 @@ def add_to_book_club(request):
     if request.method == "POST":
         form = ClubBookForm(request.POST)
         print('DATA FROM ADD BOOK TO CLUB: ', request.POST)
-        print('selected CLUB: ', request.POST['club-selected'])
+
         if form.is_valid():
+            if ('club-selected' not in request.POST):
+                return redirect('books')
             new_club_book = form.save(commit=False)
     
             if request.user.user_type == 'M':
@@ -269,10 +271,16 @@ def add_to_book_club(request):
                 # club_id = Member.objects.get(id=member_id).club.id
 
                 club_id = request.POST['club-selected']
-                
+                # print('count: ', Club.objects.get(id=club_id).books.count() )
+
+                if (Club.objects.get(id=club_id).books.count() > 0):
+                    print('Show previous book: ',Club.objects.get(id=club_id).books.all())
+                    Club.objects.get(id=club_id).books.all().delete()
+                    print('After clear(): ',Club.objects.get(id=club_id).books.all())
+
+
             new_club_book.club_id = club_id
             new_club_book.save()
-            print(new_club_book)
 
         else:
                 print(form.errors)

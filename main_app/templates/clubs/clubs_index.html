@@ -2,24 +2,8 @@
 
 {% block content %}
 
-<h1>CLUBS LIST</h1>
-<!-- --------------------------------------------------------------------------------------------- -->
-<!-- Modal Testing - Jacky's -->
-<!-- <button id="addBtn" class="btn">Add Club</button><br>
+<h1 class="clubsh1">CLUBS LIST</h1>
 
-<div id="modal_add_club" class="modalCustom">
-            
-    <div class="modal-content-custom">
-        <span id="closeAdd">&times;</span>
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{ addclub_form.as_p }}
-
-            <button class="btn" type="submit">Submit</button> 
-        </form>
-    </div>
-</div> -->
-<!-- --------------------------------------------------------------------------------------------- -->
 <!-- Modal Testing - Materialize -->
 <!-- Modal Trigger -->
 {% if user.user_type == 'M' %}
@@ -36,7 +20,6 @@
         <div class="modal-body">
             {% csrf_token %}
             {{ addclub_form.as_p }}
-            <h6 class="red-text darken-1">{{ message }}</h6>
             <div class="modal-footer">
                 <button class="btn" type="submit">Submit</button> 
                 <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
@@ -46,7 +29,6 @@
 
   </div>
 </div>
-<!-- --------------------------------------------------------------------------------------------- -->
 
 {% if clubs.count > 0 %}
 <table>
@@ -60,7 +42,6 @@
     </tr>
     {% for club in clubs %}
         <tr>
-            <!-- delete opens a 'are you sure?' page <button type="submit">Close Club</button> -->
             <td><a href="{% url 'clubs_detail' club.id %}">{{ club.name }}</a></td>
             <td>{{ club.meet_date }}</td>
             <td>{{ club.get_location_display }}</td>
@@ -85,9 +66,7 @@
     const input = document.getElementById('id_meet_date');
     const datepicker = new TheDatepicker.Datepicker(input);
     datepicker.options.setInputFormat("Y-m-d");
-    datepicker.options.setMonthAsDropdown();
-    // datepicker.options.setInitialDate("2022-01-15"); 
-    datepicker.options.setInitialDatePriority()
+    datepicker.options.setMonthAsDropdown()
     datepicker.render();
 
     // add JS to initialize select below + include materialize script library to show dropdown of location

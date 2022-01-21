@@ -1,10 +1,11 @@
 from collections import UserString
-from re import template
+from re import S, template
+from tkinter import N
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
-from .forms import AddClubForm, SignUpForm, RentBookForm, UpdateClubForm, ClubBookForm
+from .forms import AddClubForm, SignUpForm, RentBookForm, UpdateClubForm, ClubBookForm, ScheduleForm
 from django.views.generic.edit import UpdateView
 from django.urls import reverse
 import datetime
@@ -31,7 +32,6 @@ def members_detail(request, member_id):
 
     # if staff is logged in and trying to see other members' profile
     member = Member.objects.get(id=member_id)
-
     books = member.books.all()
 
     return render(request, 'user/member_detail.html', {'member': member, 'books':books})
@@ -39,16 +39,16 @@ def members_detail(request, member_id):
 def staffs_detail(request, staff_id):
     # original method:
     # staff = Staff.objects.get(id=user_id)
-
+    form = ScheduleForm()
     user = User.objects.get(id=request.user.id)
     staff_id = user.staff.id
 
     staff = Staff.objects.get(id=staff_id)
-    return render(request, 'user/staff_detail.html', {'staff': staff})
+    return render(request, 'user/staff_detail.html', {'staff': staff, 'form':form})
 
-def users_detail(request, user_id):
-    user = User.objects.get(id=user_id)
-    return render(request, 'user/user_detail.html', {user})
+# def users_detail(request, user_id):
+#     user = User.objects.get(id=user_id)
+#     return render(request, 'user/user_detail.html', {user})
 
 # ---------------------------------------------------------------------
 def signup(request):
@@ -227,11 +227,16 @@ def books_index(request):
         # for club in Club.objects.filter(members=member_id):
         #     print(club.name)
         part_of_clubs = Club.objects.filter(members=member_id)
-
+        return render(request, "books/index.html", {
+            "books": books,
+            "message":message,
+            "part_of_clubs": part_of_clubs
+        })
+    
     return render(request, "books/index.html", {
         "books": books,
-        "message":message,
-        "part_of_clubs": part_of_clubs
+        "message":message
+        # "part_of_clubs": part_of_clubs
     })
 
 def unassoc_book(request, member_id, book_key):
@@ -309,7 +314,44 @@ class UserUpdate(UpdateView):
     def get_success_url(self):
         return reverse('members_detail', kwargs={'member_id': self.object.id},)
         
-        
+
+def schedule(request, staff_id):
+    # create a ModelForm instance using the data in the posted form
+    # form = ScheduleForm(request.POST, instance = staff)
+    form = ScheduleForm(request.POST)
+    print('DATA FROM STAFF DETAILS WORK FORM: ', request.POST)
+    # validate the data
+    if form.is_valid():
+        print('VALIDATED')
+        print(request.user.id)
+        print(staff_id)
+    
+        print(Staff.objects.get(id=staff_id))
+        staff = Staff.objects.get(id=staff_id)
+        # overwrites the about staff id above
+        # if request.user.user_type == 'S':
+            # print('passed through here, registered as staff')
+            # find member_id based on request.user.id (dynamic)
+            # user = User.objects.get(id=request.user.id)
+            # staff_id = user.staff.id
+
+        # new_shift contains .day .shift
+        # new_shift = form.save()
+        new_shift = form.save(commit=False)
+        print(new_shift.day)
+        print(new_shift.shift)
+        new_shift.day.staff_id = staff_id
+        new_shift.shift.staff_id = staff_id
+
+        new_shift.save()
+        # new_shift.day.staff_id = staff_id
+        # new_shift.shift.staff_id = staff_id
+        # new_shift.staff_id = staff_id
+
+
+        # print('NEW SHIFT: ',new_shift)
+
+    return redirect('staffs_detail', staff_id=staff_id)       
 
 
   

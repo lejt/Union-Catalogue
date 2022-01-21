@@ -54,3 +54,24 @@ class ClubBookForm(ModelForm):
             cleaned_data["author_name"] = string_list_to_string(cleaned_data["author_name"])
             cleaned_data["image"] = string_list_to_string(cleaned_data["image"])
             return cleaned_data
+
+# class DaySelect(forms.Select):
+#     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+#         option = super().create_option(name, value, label, selected, index, subindex, attrs)
+#         return option
+
+# class ShiftSelect(forms.Select):
+#     def create_option(self, name, value, label, selected, index, subindex=None, attrs=None):
+#         option = super().create_option(name, value, label, selected, index, subindex, attrs)
+#         return option
+
+# class ScheduleForm(ModelForm):
+#     class Meta:
+#         model = Staff
+#         fields = ['day', 'shift'] 
+        # widgets = {'day': DaySelect, 'shift': ShiftSelect}
+
+class ScheduleForm(ModelForm):
+    class Meta:
+        model = Shift
+        fields = ['day', 'shift'] 

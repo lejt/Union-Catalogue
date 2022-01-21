@@ -10,4 +10,51 @@
 <p>email: {{ staff.user.email }}</p>
 <p>User Type: {{ staff.user.get_user_type_display }}</p>
 
+<form action="{% url 'schedule' staff.id %}" method="POST">
+    {%csrf_token%}
+    <!-- <select id="id_day" name="day" required>
+      <option value="" selected>---------</option>
+      <option value="1">Monday</option>
+      <option value="2">Tuesday</option>
+      <option value="3">Wednesday</option>
+      <option value="4">Thursday</option>
+      <option value="5">Friday</option>
+    </select>
+    <select id="id_shift" name="shift" required>
+      <option value="" selected>---------</option>
+      <option value="1">Not Working</option>
+      <option value="2">Morning Shift</option>
+      <option value="3">Evening Shift</option>
+    </select> -->
+    {{ form.as_p }}
+    <button type="submit" class="btn">Work Shift</button>
+</form>
+
+<!-- {{ staff.user }}
+<hr>
+{{ staff.day }} -->
+
+<table>
+    <thead>
+      {% for day in staff.day%}
+      <tr>
+        <th>{{ day }}</th>
+      </tr>
+      {% endfor %}
+    </thead>
+    <tbody>
+      <tr>
+        {% for shift in staff.shift %}
+        <td>{{ shift }}</td>
+        {% endfor %}
+      </tr>
+    </tbody>
+</table>
+
+<script>
+    const selectEl1 = document.getElementById("id_day");
+    M.FormSelect.init(selectEl1);
+    const selectEl2 = document.getElementById("id_shift");
+    M.FormSelect.init(selectEl2);
+</script>
 {% endblock %}

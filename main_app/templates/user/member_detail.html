@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Member Detail</h1>
+<h1 class="memberh1">Member Detail</h1>
 
 <p>User Type: {{ member.user.get_user_type_display }}</p>
 <p>Hi {{ member.user.first_name }}!</p>
@@ -19,9 +19,7 @@
 {% endif %}
 
 
-
-
-<h4>RENTED BOOKS for Member ID ({{member.id}}):</h4>
+<h4 class="memberh4">RENTED BOOKS for Member ID ({{member.id}}):</h4>
 <table>
     <tr>
         <th>Book</th>

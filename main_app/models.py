@@ -37,13 +37,6 @@ class Member(models.Model):
     class Meta:
         ordering = ['-join_club_date']
 
-class Staff(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # shifts_per_week = models.IntegerField(default=5)
-
-    def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name}"
-
 # ------------------------------------------------------------------------
 class RentBook(models.Model):
     title = models.CharField(verbose_name = "name", max_length = 200, unique=True)
@@ -54,8 +47,6 @@ class RentBook(models.Model):
 
     def __str__(self):
         return self.title
-
-
 
 # Many club has many members - Club model holds key of Members
 class Club(models.Model):
@@ -85,5 +76,36 @@ class ClubBook(models.Model):
     def __str__(self):
         return self.title
 
+DAYS =(('M', 'Monday'), ('T','Tuesday'), ('W', 'Wednesday'), ('Th', 'Thursday'), ('F', 'Friday'))
+SHIFTS = (('D', 'Day Shift'),('N', 'Night Shift'), ('-', 'Not Working'))
 
+class Staff(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # day = models.CharField(
+    #     max_length=2,
+    #     choices=DAYS,
+    #     default=DAYS[0][0]
+    # )
+    # shift = models.CharField(
+    #     max_length=1,
+    #     choices=SHIFTS,
+    #     default=SHIFTS[2][0]
+    # )
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+   
+    def get_absolute_url(self):
+        return reverse('staffs_detail', kwargs={'staff_id': self.id})
  
+class Shift(models.Model):
+    staff = models.ForeignKey(Club, on_delete = models.CASCADE)
+    day = models.CharField(
+        max_length=2,
+        choices=DAYS,
+        default=DAYS[0][0]
+    )
+    shift = models.CharField(
+        max_length=1,
+        choices=SHIFTS,
+        default=SHIFTS[2][0]
+    )

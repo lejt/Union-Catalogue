@@ -7,6 +7,7 @@ from .models import *
 from .forms import AddClubForm, SignUpForm, RentBookForm, UpdateClubForm, ClubBookForm
 from django.views.generic.edit import UpdateView
 from django.urls import reverse
+import datetime
 
 from main_app.utils import search_books
 
@@ -88,13 +89,25 @@ def signup(request):
 
 def clubs_index(request):
     clubs = Club.objects.all()
+    message = ""
     # instantiate addclub form to show in index page
     addclub_form = AddClubForm()
-    return render(request, 'clubs/clubs_index.html', {'clubs': clubs, 'addclub_form': addclub_form})
+
+    return render(request, 'clubs/clubs_index.html', {'clubs': clubs, 'addclub_form': addclub_form, 'message': message})
 
 def add_club(request):
     form = AddClubForm(request.POST)
+    message = ""
+    clubs = Club.objects.all()
+    addclub_form = AddClubForm()
     if form.is_valid():
+
+        print(request.POST['meet_date'])
+        print('today :', datetime.date.today())
+        if (request.POST['meet_date'] <= str(datetime.date.today())):
+            message = 'Select a present or future date.'
+            return render(request, 'clubs/clubs_index.html', {'clubs': clubs, 'addclub_form': addclub_form, 'message': message})
+
         new_club = form.save()
         # new_club.save()
         # new_club is like Club.objects.last(), the newest created club should be the last obj

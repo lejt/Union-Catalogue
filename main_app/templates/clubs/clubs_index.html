@@ -36,6 +36,7 @@
         <div class="modal-body">
             {% csrf_token %}
             {{ addclub_form.as_p }}
+            <h6 class="red-text darken-1">{{ message }}</h6>
             <div class="modal-footer">
                 <button class="btn" type="submit">Submit</button> 
                 <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
@@ -84,6 +85,9 @@
     const input = document.getElementById('id_meet_date');
     const datepicker = new TheDatepicker.Datepicker(input);
     datepicker.options.setInputFormat("Y-m-d");
+    datepicker.options.setMonthAsDropdown();
+    // datepicker.options.setInitialDate("2022-01-15"); 
+    datepicker.options.setInitialDatePriority()
     datepicker.render();
 
     // add JS to initialize select below + include materialize script library to show dropdown of location

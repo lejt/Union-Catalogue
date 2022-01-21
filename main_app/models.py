@@ -19,6 +19,9 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    def get_absolute_url(self):
+        return reverse('members_detail', kwargs={'user_id': self.id})
+
 # User split into either Member or Staff --------------------------------
 class Member(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -51,7 +54,8 @@ class RentBook(models.Model):
 
     def __str__(self):
         return self.title
-    
+
+
 
 # Many club has many members - Club model holds key of Members
 class Club(models.Model):
@@ -71,8 +75,15 @@ class Club(models.Model):
     members = models.ManyToManyField(Member)
     create_date = models.DateTimeField(default=timezone.now, blank=True)
 
+class ClubBook(models.Model):
+    title = models.CharField(verbose_name = "name", max_length = 200, unique=True)
+    club = models.ForeignKey(Club, on_delete = models.CASCADE, related_name = "books")
+    image = models.CharField(max_length=200, null = True)
+    author_name = models.CharField(max_length=200, null = True, blank = True)
+    key = models.CharField(max_length=100, null = True)
 
-
+    def __str__(self):
+        return self.title
 
 
  

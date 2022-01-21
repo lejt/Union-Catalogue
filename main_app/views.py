@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
-from .forms import AddClubForm, SignUpForm, UserSignUpForm, RentBookForm
+from .forms import AddClubForm, SignUpForm, RentBookForm, UpdateClubForm, ClubBookForm
 from django.views.generic.edit import UpdateView
 from django.urls import reverse
 
@@ -164,6 +164,18 @@ def delete_club(request, club_id):
     Club.objects.get(id=club_id).delete()
     return redirect('clubs_index')
 
+def update_club(request, club_id):
+    club_to_be_updated = Club.objects.get(id=club_id)
+
+    form = UpdateClubForm(request.POST, instance = club_to_be_updated)
+    if form.is_valid():
+        form.save()
+        # updateclub = form.save()
+        # updateclub.save()
+        return redirect('clubs_detail', club_id=club_id)
+    
+    return render(request, 'clubs/clubs_update.html', {'form': form})
+
 def unassoc_memb(request, club_id, member_id):
     # Club.objects.get(id=club_id).members.filter(id=member_id).delete()
     Club.objects.get(id=club_id).members.remove(Member.objects.get(id=member_id))
@@ -193,9 +205,20 @@ def books_index(request):
     # view raw json data from search query
     # print(books)
 
+    # find clubs members are part of and show them on this page
+    if request.user.user_type == 'M':
+        # find member_id based on request.user.id (dynamic)
+        user = User.objects.get(id=request.user.id)
+        member_id = user.member.id
+        # print(Club.objects.filter(members=member_id))
+        # for club in Club.objects.filter(members=member_id):
+        #     print(club.name)
+        part_of_clubs = Club.objects.filter(members=member_id)
+
     return render(request, "books/index.html", {
         "books": books,
-        "message":message
+        "message":message,
+        "part_of_clubs": part_of_clubs
     })
 
 def unassoc_book(request, member_id, book_key):
@@ -230,7 +253,40 @@ def add_to_rent_books(request):
         
     return redirect('members_detail', member_id=member_id)
 
+def add_to_book_club(request):
+    if request.method == "POST":
+        form = ClubBookForm(request.POST)
+        print('DATA FROM ADD BOOK TO CLUB: ', request.POST)
 
+        if form.is_valid():
+            if ('club-selected' not in request.POST):
+                return redirect('books')
+            new_club_book = form.save(commit=False)
+    
+            if request.user.user_type == 'M':
+                # find member_id based on request.user.id (dynamic)
+                user = User.objects.get(id=request.user.id)
+                member_id = user.member.id
+                # print(Member.objects.get(id=member_id))
+                # part_of_clubs = Club.objects.filter(members=member_id)
+                # club_id = Member.objects.get(id=member_id).club.id
+
+                club_id = request.POST['club-selected']
+                # print('count: ', Club.objects.get(id=club_id).books.count() )
+
+                if (Club.objects.get(id=club_id).books.count() > 0):
+                    print('Show previous book: ',Club.objects.get(id=club_id).books.all())
+                    Club.objects.get(id=club_id).books.all().delete()
+                    print('After clear(): ',Club.objects.get(id=club_id).books.all())
+
+
+            new_club_book.club_id = club_id
+            new_club_book.save()
+
+        else:
+                print(form.errors)
+        
+    return redirect('clubs_detail', club_id=club_id)
 
 class UserUpdate(UpdateView):
     model = User

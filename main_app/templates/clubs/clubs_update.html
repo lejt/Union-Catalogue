@@ -17,6 +17,7 @@
     const input = document.getElementById('id_meet_date');
     const datepicker = new TheDatepicker.Datepicker(input);
     datepicker.options.setInputFormat("Y-m-d");
+    datepicker.options.setMonthAsDropdown()
     datepicker.render();
 
     // add JS to initialize select below + include materialize script library to show dropdown of location

@@ -58,11 +58,12 @@
     </header>
 
     <main class="container">
-      {% if user.user_type == 'M' %}
+      <!-- Indication of user type for testing -->
+      <!-- {% if user.user_type == 'M' %}
         <h5>Logged in as Member</h5>
       {% elif user.user_type == 'S' %}
         <h5>Logged in as Staff</h5>
-      {% endif %}
+      {% endif %} -->
 
       {% block content %} 
       {% endblock %}

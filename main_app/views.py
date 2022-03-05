@@ -21,8 +21,6 @@ def members_index(request):
     return render(request, 'user/member_index.html', {'members': members})
 
 def members_detail(request, member_id):
-    # original method:
-    # member = Member.objects.get(id=member_id)
 
     # if member is logged in and trying to see their own profile
     if request.user.user_type == 'M':
@@ -37,8 +35,6 @@ def members_detail(request, member_id):
     return render(request, 'user/member_detail.html', {'member': member, 'books':books})
 
 def staffs_detail(request, staff_id):
-    # original method:
-    # staff = Staff.objects.get(id=user_id)
     form = ScheduleForm()
     user = User.objects.get(id=request.user.id)
     staff_id = user.staff.id
@@ -102,33 +98,19 @@ def add_club(request):
     addclub_form = AddClubForm()
     if form.is_valid():
 
-        print(request.POST['meet_date'])
-        print('today :', datetime.date.today())
+        # print(request.POST['meet_date'])
+        # print('today :', datetime.date.today())
         if (request.POST['meet_date'] <= str(datetime.date.today())):
             message = 'Select a present or future date.'
             return render(request, 'clubs/clubs_index.html', {'clubs': clubs, 'addclub_form': addclub_form, 'message': message})
 
         new_club = form.save()
-        # new_club.save()
         # new_club is like Club.objects.last(), the newest created club should be the last obj
         # new_club id is only available after the .save()
         if request.user.user_type == 'M':
             # find member_id based on request.user.id (dynamic)
             user = User.objects.get(id=request.user.id)
             member_id = user.member.id
-
-        
-        # print(Member.objects.get(id=member_id).join_club_date)
-        # print(Member.objects.get(id=member_id).create_date)
-        # print('2',Member.objects.filter(user=request.user.id)[0].join_club_date)
-        # print('2',Member.objects.filter(user=request.user.id)[0].create_date)
-
-        
-
-        # print(Member.objects.get(id=member_id).join_club_date)
-        # print(Member.objects.get(id=member_id).create_date)
-
-        # new_club.members.add(Member.objects.get(id=member_id))
 
         # saving the member here updates the join_club_date to current time
         Member.objects.get(id=member_id).save()
@@ -149,10 +131,6 @@ def add_club(request):
 
 def clubs_detail(request, club_id):
     club = Club.objects.get(id=club_id)
-
-    # print(club)
-    # member_id = Member.objects.filter(user=request.user.id).first().id
-    # member = Member.objects.get(id=member_id)
 
     return render(request, 'clubs/clubs_detail.html', {'club': club})
 
@@ -183,27 +161,16 @@ def update_club(request, club_id):
     form = UpdateClubForm(request.POST, instance = club_to_be_updated)
     if form.is_valid():
         form.save()
-        # updateclub = form.save()
-        # updateclub.save()
+ 
         return redirect('clubs_detail', club_id=club_id)
     
     return render(request, 'clubs/clubs_update.html', {'form': form})
 
 def unassoc_memb(request, club_id, member_id):
-    # Club.objects.get(id=club_id).members.filter(id=member_id).delete()
     Club.objects.get(id=club_id).members.remove(Member.objects.get(id=member_id))
     return redirect('clubs_detail', club_id=club_id)
 
 def books_index(request):
-
-    # OLD ORIGINAL CODE----------------
-    # books = Book.objects.all()
-
-    # if querySearch == request.GET.get("q"):
-    #     books = search_books(querySearch)
-    #     print(books)
-    # return render(request, 'books/index.html', {'books': books})
-    # --------------------------------
 
     books:list = []
     message:str = ""
@@ -223,9 +190,7 @@ def books_index(request):
         # find member_id based on request.user.id (dynamic)
         user = User.objects.get(id=request.user.id)
         member_id = user.member.id
-        # print(Club.objects.filter(members=member_id))
-        # for club in Club.objects.filter(members=member_id):
-        #     print(club.name)
+
         part_of_clubs = Club.objects.filter(members=member_id)
         return render(request, "books/index.html", {
             "books": books,
@@ -240,11 +205,6 @@ def books_index(request):
     })
 
 def unassoc_book(request, member_id, book_key):
-
-    # if request.user.user_type == 'M':
-    #     # find member_id based on request.user.id (dynamic)
-    #     user = User.objects.get(id=request.user.id)
-    #     member_id = user.member.id
 
     RentBook.objects.get(member=member_id, key=book_key).delete()
     return redirect('members_detail', member_id)
@@ -274,7 +234,7 @@ def add_to_rent_books(request):
 def add_to_book_club(request):
     if request.method == "POST":
         form = ClubBookForm(request.POST)
-        print('DATA FROM ADD BOOK TO CLUB: ', request.POST)
+        # print('DATA FROM ADD BOOK TO CLUB: ', request.POST)
 
         if form.is_valid():
             if ('club-selected' not in request.POST):
@@ -287,15 +247,13 @@ def add_to_book_club(request):
                 member_id = user.member.id
                 # print(Member.objects.get(id=member_id))
                 # part_of_clubs = Club.objects.filter(members=member_id)
-                # club_id = Member.objects.get(id=member_id).club.id
 
                 club_id = request.POST['club-selected']
-                # print('count: ', Club.objects.get(id=club_id).books.count() )
 
                 if (Club.objects.get(id=club_id).books.count() > 0):
-                    print('Show previous book: ',Club.objects.get(id=club_id).books.all())
+                    # print('Show previous book: ',Club.objects.get(id=club_id).books.all())
                     Club.objects.get(id=club_id).books.all().delete()
-                    print('After clear(): ',Club.objects.get(id=club_id).books.all())
+                    # print('After clear(): ',Club.objects.get(id=club_id).books.all())
 
 
             new_club_book.club_id = club_id
@@ -317,7 +275,6 @@ class UserUpdate(UpdateView):
 
 def schedule(request, staff_id):
     # create a ModelForm instance using the data in the posted form
-    # form = ScheduleForm(request.POST, instance = staff)
     form = ScheduleForm(request.POST)
     print('DATA FROM STAFF DETAILS WORK FORM: ', request.POST)
     # validate the data
@@ -347,9 +304,6 @@ def schedule(request, staff_id):
         # new_shift.day.staff_id = staff_id
         # new_shift.shift.staff_id = staff_id
         # new_shift.staff_id = staff_id
-
-
-        # print('NEW SHIFT: ',new_shift)
 
     return redirect('staffs_detail', staff_id=staff_id)       
 

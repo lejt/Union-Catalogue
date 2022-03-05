@@ -3,8 +3,8 @@
 ## General Information
 Union Catalogue is a management app for libraries that want to integrate to a fast Python based system to organize its data. 
 
-<img src="main_app/static/images/home.jpg" width=100px height=150px overflow="hidden"> <img  src="main_app/static/images/signup.jpg" width=100px height=120px overflow="hidden"> <img  src="main_app/static/images/search.jpg" width=100px height=120px overflow="hidden"> <img  src="main_app/static/images/clubs.jpg" width=100px height=120px overflow="hidden">
-<img  src="main_app/static/images/clubdetail.jpg" width=100px height=120px overflow="hidden"> <img  src="main_app/static/images/memberdirectory.jpg" width=100px height=120px overflow="hidden">
+<img src="main_app/static/images/home.jpg" width=150px height=120px overflow="hidden"> <img  src="main_app/static/images/signup.jpg" width=150px height=120px overflow="hidden"> <img  src="main_app/static/images/search.jpg" width=150px height=120px overflow="hidden"> <img  src="main_app/static/images/clubs.jpg" width=150px height=120px overflow="hidden">
+<img  src="main_app/static/images/clubdetail.jpg" width=150px height=120px overflow="hidden"> <img  src="main_app/static/images/memberdirectory.jpg" width=150px height=120px overflow="hidden">
 
 ## Technologies used
 * Python
